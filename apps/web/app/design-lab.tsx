@@ -120,7 +120,7 @@ export function DesignLab() {
                 tabIndex={0}
                 role="region"
                 aria-label={`مقیاس رنگ ${scale.name}`}
-                className="flex gap-3 overflow-x-auto pb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                className="flex gap-3 overflow-x-auto pb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {scale.steps.map((step) => (
                   <Swatch

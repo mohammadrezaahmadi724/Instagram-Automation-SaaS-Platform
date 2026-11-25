@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import '@directora/ui/tokens.css';
 @import '@directora/ui/theme.css';
+@source '../../../packages/ui/src';
 
 @font-face {
   font-family: Vazirmatn;

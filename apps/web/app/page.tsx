@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import Image from 'next/image';
+import { connection } from 'next/server';
 import { formatJalali, formatRelativeTime, formatToman, jalaliYear } from '@directora/core';
 import { Badge, ThemeToggle } from '@directora/ui';
 import { DesignLab } from './design-lab';
@@ -9,7 +10,7 @@ function BrandMark() {
   const logo = path.join(process.cwd(), 'public', 'brand', 'directora-logo.png');
   if (existsSync(logo)) {
     return (
-      <span className="inline-flex rounded-lg bg-[var(--ink-0)] p-3">
+      <span className="inline-flex rounded-lg bg-brand-plate p-3">
         <Image
           src="/brand/directora-logo.png"
           alt="لوگوی دایرکتورا"
@@ -43,7 +44,8 @@ const typeScale = [
   ['text-xs', 'text-xs', 'پاسخ سریع به دایرکت، فروش بیشتر'],
 ] as const;
 
-export default function HomePage() {
+export default async function HomePage() {
+  await connection();
   const now = new Date();
   const earlier = new Date(now.getTime() - 3 * 60 * 1000);
   return (
@@ -66,7 +68,7 @@ export default function HomePage() {
           <div className="h-1 w-full" style={{ backgroundImage: 'var(--gradient-brand)' }} />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
+            className="pointer-events-none absolute inset-0 opacity-halo"
             style={{
               backgroundImage: 'radial-gradient(circle at top, var(--primary), transparent 55%)',
             }}
@@ -85,9 +87,9 @@ export default function HomePage() {
         <section className="flex flex-col gap-4">
           <h2 className="text-2xl font-bold">تایپوگرافی</h2>
           {typeScale.map(([token, className, sentence]) => (
-            <p key={token} className={className}>
-              <span className="ms-3 font-mono text-xs text-muted">{token}</span>
-              {sentence}
+            <p key={token} className={`flex items-baseline gap-3 ${className}`}>
+              <span className="font-mono text-xs text-muted">{token}</span>
+              <span>{sentence}</span>
             </p>
           ))}
         </section>
@@ -99,8 +101,8 @@ export default function HomePage() {
           <p>
             پیام <bdi>Directora</bdi> در کنار متن فارسی
           </p>
-          <p dir="ltr" className="text-start">
-            +98 21 000 0000
+          <p>
+            شماره نمونه: <bdi dir="ltr">+98 21 000 0000</bdi>
           </p>
         </section>
       </main>

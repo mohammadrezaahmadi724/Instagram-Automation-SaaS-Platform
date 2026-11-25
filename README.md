@@ -97,7 +97,7 @@ Instagram Automation SaaS Platform/
 
 ## Getting started
 
-پیش‌نیاز: Node 24، pnpm 12.23.0، و Docker Desktop.
+پیش‌نیاز: Node `24.15` یا بالاتر (`.nvmrc`)، pnpm 12.23.0، و Docker Desktop. نسخه‌ی 24.7 فعلی این ماشین برای `jsdom@31` کافی نیست و باید ارتقا یابد. این مخزن Node را نصب یا ارتقا نمی‌دهد.
 
 ```powershell
 pnpm install
@@ -106,7 +106,14 @@ pnpm db:migrate:dev
 pnpm dev
 pnpm verify
 pnpm test:e2e
+pnpm test:integration
 ```
+
+## پورت‌ها
+
+Postgres و Redis دایرکتورا فقط روی loopback منتشر می‌شوند: `127.0.0.1:55432` و `127.0.0.1:56379`. متغیرهای `DIRECTORA_PG_PORT` و `DIRECTORA_REDIS_PORT` همین مقدارها را عوض می‌کنند. `DATABASE_URL` و `REDIS_URL` باید همان پورت را داشته باشند. پورت‌های 5432 و 6379 مال سرویس‌های دیگر همین ماشین‌اند و استفاده نمی‌شوند.
+
+`apps/web/AGENTS.md` را Next 16 هنگام dev می‌سازد و اگر حذف شود دوباره نوشته می‌شود.
 
 ## Brand assets
 

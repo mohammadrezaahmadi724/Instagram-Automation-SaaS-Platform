@@ -45,7 +45,7 @@ export function ThemeToggle() {
             type="button"
             aria-pressed={selected}
             className={cn(
-              'inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]',
+              'inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               selected ? 'bg-primary text-primary-foreground' : 'text-foreground',
             )}
             onClick={() => setTheme(option.value)}

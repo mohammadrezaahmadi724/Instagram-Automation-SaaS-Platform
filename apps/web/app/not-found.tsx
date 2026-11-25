@@ -8,7 +8,7 @@ export default function NotFound() {
       <p className="text-subtle">دایرکتورا هنوز این مسیر را ندارد.</p>
       <Link
         href="/"
-        className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+        className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         بازگشت به صفحه اصلی
       </Link>

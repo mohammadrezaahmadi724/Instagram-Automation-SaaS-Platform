@@ -1,48 +1,56 @@
-import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { QueueEvents } from 'bullmq';
-import { afterAll, describe, expect, it } from 'vitest';
-import { createRedis, createSystemQueue, createSystemWorker } from '../src/queues';
+import { QueueEvents, type Queue, type Worker } from 'bullmq';
+import type { Redis } from 'ioredis';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { createRedis, createSystemQueue, createSystemWorker, systemQueueName } from '../src/queues';
 
-function ownRedisIsRunning() {
-  try {
-    const state = execSync(
-      'docker inspect -f "{{.State.Running}}" instagramautomationsaasplatform-redis-1',
-      {
-        encoding: 'utf8',
-      },
-    ).trim();
-    return state === 'true';
-  } catch {
-    return false;
-  }
-}
+const runIntegration = process.env.RUN_INTEGRATION === '1';
 
-function redisUrl() {
-  if (process.env.REDIS_URL) return process.env.REDIS_URL;
-  const file = readFileSync(new URL('../../../.env', import.meta.url), 'utf8');
-  const line = file.split(/\r?\n/).find((entry) => entry.startsWith('REDIS_URL='));
-  return line?.slice('REDIS_URL='.length);
-}
-
-describe.skipIf(!ownRedisIsRunning())('system.ping', () => {
-  const url = redisUrl();
-  const connection = createRedis(url ?? 'redis://127.0.0.1:6379');
-  const queue = createSystemQueue(connection);
-  const events = new QueueEvents('system', { connection: connection.duplicate() });
-  const worker = createSystemWorker(connection.duplicate(), () => undefined);
-
-  afterAll(async () => {
-    await worker.close();
-    await events.close();
-    await queue.close();
-    await connection.quit();
+if (!runIntegration) {
+  describe.skip('system.ping (RUN_INTEGRATION is not set; integration test skipped)', () => {
+    it('returns pong', () => {
+      expect(true).toBe(true);
+    });
   });
+} else {
+  describe('system.ping', () => {
+    let connection: Redis;
+    let queue: Queue;
+    let events: QueueEvents;
+    let worker: Worker;
 
-  it('returns pong', async () => {
-    expect(url).toBeTruthy();
-    const job = await queue.add('system.ping', { at: new Date().toISOString() });
-    const result = await job.waitUntilFinished(events, 8000);
-    expect(result).toEqual({ pong: true });
+    beforeAll(async () => {
+      const url = process.env.REDIS_URL;
+      if (!url) throw new Error('REDIS_URL is required when RUN_INTEGRATION=1');
+      connection = createRedis(url);
+      connection.on('error', () => undefined);
+      try {
+        await Promise.race([
+          connection.ping(),
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('redis unavailable')), 2000);
+          }),
+        ]);
+      } catch (error) {
+        connection.disconnect();
+        throw error;
+      }
+      queue = createSystemQueue(connection);
+      events = new QueueEvents(systemQueueName, { connection: connection.duplicate() });
+      worker = createSystemWorker(connection.duplicate(), () => undefined);
+      await worker.waitUntilReady();
+    });
+
+    afterAll(async () => {
+      await worker?.close();
+      await events?.close();
+      await queue?.close();
+      await connection?.quit();
+    });
+
+    it('returns pong', async () => {
+      const job = await queue.add('system.ping', { at: new Date().toISOString() });
+      const result = await job.waitUntilFinished(events, 8000);
+      expect(result).toEqual({ pong: true });
+    });
   });
-});
+}

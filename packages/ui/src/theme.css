@@ -40,13 +40,20 @@
   --color-info-subtle-foreground: var(--info-subtle-foreground);
   --color-ring: var(--ring);
   --color-link: var(--link);
-  --radius-xs: var(--radius-xs);
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
-  --radius-2xl: var(--radius-2xl);
-  --radius-full: var(--radius-full);
+  --color-brand-plate: var(--brand-plate);
+  --radius-xs: var(--dr-radius-xs);
+  --radius-sm: var(--dr-radius-sm);
+  --radius-md: var(--dr-radius-md);
+  --radius-lg: var(--dr-radius-lg);
+  --radius-xl: var(--dr-radius-xl);
+  --radius-2xl: var(--dr-radius-2xl);
+  --radius-full: var(--dr-radius-full);
   --shadow-sm: var(--elevation-sm);
-  --font-mono: var(--font-mono);
+  --font-mono: var(--dr-font-mono);
+  --duration-fast: var(--motion-fast);
+  --ease-standard: var(--dr-ease-standard);
+}
+
+@utility opacity-halo {
+  opacity: var(--halo-opacity);
 }

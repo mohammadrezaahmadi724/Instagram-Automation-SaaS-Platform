@@ -3,12 +3,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const physical =
-  /(?:^|[\s"'`{:])(ml-|mr-|pl-|pr-|left-|right-|text-left|text-right|rounded-l-|rounded-r-|border-l-|border-r-)/;
+  /(?:^|[\s"'`{:])-?(?:ml-|mr-|pl-|pr-|left-|right-|text-left|text-right|rounded-l-|rounded-r-|border-l-|border-r-)/;
 const hex = /#[0-9a-fA-F]{3,8}\b/;
 const rgb = /rgb\(/;
 const emptyHref = /href\s*=\s*["']#["']/;
 const emptyClick = /onClick=\{\(\)\s*=>\s*\{\s*\}\}/;
 const arbitrary = /\[[^\]]*(\d+px|#[0-9a-fA-F]{3,8})/;
+const rawInk = /bg-\[var\(--ink-/;
+const arbitraryOpacity = /opacity-\[/;
 
 const roots = ['apps/web/app', 'apps/web/src', 'packages/ui/src'];
 const extensions = new Set(['.ts', '.tsx', '.css']);
@@ -34,6 +36,12 @@ export function scanSource(filePath, source) {
     }
     if (arbitrary.test(line)) {
       findings.push({ file: normalized, line: lineNo, rule: 'arbitrary-value' });
+    }
+    if (rawInk.test(line)) {
+      findings.push({ file: normalized, line: lineNo, rule: 'raw-ink-token' });
+    }
+    if (arbitraryOpacity.test(line)) {
+      findings.push({ file: normalized, line: lineNo, rule: 'arbitrary-opacity' });
     }
   });
   return findings;

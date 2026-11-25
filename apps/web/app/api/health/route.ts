@@ -1,34 +1,93 @@
+import net from 'node:net';
 import { getPrisma } from '@directora/db';
 import packageJson from '../../../package.json';
-import { readEnv } from '../../../src/env';
+import { readEnv, type WebEnv } from '../../../src/env';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
-  const env = readEnv();
-  const body: { status: 'ok'; service: 'web'; version: string; time: string; db?: 'ok' | 'error' } =
-    {
-      status: 'ok',
-      service: 'web',
-      version: packageJson.version,
-      time: new Date().toISOString(),
-    };
-  const deep = new URL(request.url).searchParams.get('deep') === '1';
-  if (deep && env.DATABASE_URL) {
-    try {
-      const prisma = getPrisma(env.DATABASE_URL);
-      await Promise.race([
-        prisma.$queryRawUnsafe('SELECT 1'),
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('timeout')), 2000);
-        }),
-      ]);
-      body.db = 'ok';
-    } catch {
-      body.db = 'error';
-      return Response.json(body, { status: 503, headers: { 'Cache-Control': 'no-store' } });
-    }
+type Dependency = 'ok' | 'error' | 'skipped';
+
+const headers = { 'Cache-Control': 'no-store' };
+
+async function withTimeout<T>(work: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      work,
+      new Promise<T>((_, reject) => {
+        timer = setTimeout(() => reject(new Error('timeout')), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
   }
-  return Response.json(body, { headers: { 'Cache-Control': 'no-store' } });
+}
+
+function probeRedis(url: string) {
+  const parsed = new URL(url);
+  const port = Number(parsed.port || '6379');
+  return new Promise<void>((resolve, reject) => {
+    const socket = net.connect({ host: parsed.hostname, port });
+    const fail = (error: Error) => {
+      socket.destroy();
+      reject(error);
+    };
+    socket.on('error', fail);
+    socket.on('data', (chunk) => {
+      socket.end();
+      if (chunk.toString().includes('PONG')) resolve();
+      else reject(new Error('unexpected'));
+    });
+    socket.on('connect', () => {
+      socket.write('*1\r\n$4\r\nPING\r\n');
+    });
+  });
+}
+
+async function checkDb(env: WebEnv): Promise<Dependency> {
+  if (!env.DATABASE_URL) return 'skipped';
+  try {
+    const prisma = getPrisma(env.DATABASE_URL);
+    await withTimeout(prisma.$queryRaw`SELECT 1`, 2000);
+    return 'ok';
+  } catch {
+    return 'error';
+  }
+}
+
+async function checkRedis(env: WebEnv): Promise<Dependency> {
+  if (!env.REDIS_URL) return 'skipped';
+  try {
+    await withTimeout(probeRedis(env.REDIS_URL), 2000);
+    return 'ok';
+  } catch {
+    return 'error';
+  }
+}
+
+export async function GET(request: Request) {
+  const time = new Date().toISOString();
+  const version = packageJson.version;
+  let env: WebEnv;
+  try {
+    env = readEnv();
+  } catch {
+    return Response.json(
+      { status: 'degraded', service: 'web', version, time, db: 'error', redis: 'error' },
+      { status: 503, headers },
+    );
+  }
+
+  const deep = new URL(request.url).searchParams.get('deep') === '1';
+  if (!deep) {
+    return Response.json({ status: 'ok', service: 'web', version, time }, { headers });
+  }
+
+  const [db, redis] = await Promise.all([checkDb(env), checkRedis(env)]);
+  const healthy = db !== 'error' && redis !== 'error';
+  return Response.json(
+    { status: healthy ? 'ok' : 'degraded', service: 'web', version, time, db, redis },
+    { status: healthy ? 200 : 503, headers },
+  );
 }

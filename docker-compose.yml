@@ -7,9 +7,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_only_change_me}
       POSTGRES_DB: ${POSTGRES_DB:-directora}
     ports:
-      - '127.0.0.1:5432:5432'
+      - '127.0.0.1:${DIRECTORA_PG_PORT:-55432}:5432'
     volumes:
-      - directora_pg:/var/lib/postgresql/data
+      - directora_pg:/var/lib/postgresql
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-directora} -d ${POSTGRES_DB:-directora}']
       interval: 5s
@@ -19,7 +19,7 @@ services:
   redis:
     image: redis:7.4-alpine
     ports:
-      - '127.0.0.1:6379:6379'
+      - '127.0.0.1:${DIRECTORA_REDIS_PORT:-56379}:6379'
     volumes:
       - directora_redis:/data
     healthcheck:

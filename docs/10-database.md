@@ -14,7 +14,7 @@ Workspace 1 ── * Membership * ── 1 User
 
 - `workspaces`: خود Workspace همان tenant است. `id` از نوع uuid نسخه‌ی ۷، `name`، `slug` یکتا، `created_at` و `updated_at`.
 - `users`: `phone_e164` یکتا با شکل `+98…`، و `display_name` اختیاری. هیچ فیلد رمز عبور، و هیچ فیلدی برای رمز اینستاگرام، وجود ندارد (SEC-001).
-- `memberships`: عضویت یک کاربر در یک Workspace با نقش `OWNER`، `ADMIN`، `AGENT` یا `VIEWER`. یکتا روی `(workspace_id, user_id)` و ایندکس روی `workspace_id`.
+- `memberships`: عضویت یک کاربر در یک Workspace با نقش `OWNER`، `ADMIN`، `AGENT` یا `VIEWER`. یکتا روی `(workspace_id, user_id)` و ایندکس روی `workspace_id`. هر دو کلید خارجی `ON DELETE RESTRICT` هستند: حذف Workspace یا User تا وقتی عضویت دارد رد می‌شود، تا ردیف عضویت یتیم نشود. حذف عضویت باید صریح و قبل از حذف طرفین باشد.
 
 نام جدول‌ها و ستون‌ها snake_case است. زمان‌ها `timestamptz` هستند.
 
@@ -37,4 +37,4 @@ Workspace 1 ── * Membership * ── 1 User
 
 ## 4. پول
 
-پیشنهاد ATLAS: مبلغ به صورت عدد صحیح به ریال ذخیره شود و فقط در UI به تومان تبدیل شود. این پیشنهاد نیازمند تأیید مالک است. `formatToman` تومانِ صحیح می‌گیرد و مبلغ منفی را نمی‌پذیرد.
+پیشنهاد ATLAS: مبلغ به صورت عدد صحیح به ریال ذخیره شود و فقط در UI به تومان تبدیل شود. این پیشنهاد هنوز در انتظار تأیید مالک است و تصمیم‌گرفته‌شده نیست. اگر مالک تأیید کند، ATLAS آن را اعلام می‌کند. `formatToman` تومانِ صحیح می‌گیرد و مبلغ منفی را نمی‌پذیرد.

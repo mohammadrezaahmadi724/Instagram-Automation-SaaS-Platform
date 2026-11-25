@@ -35,7 +35,7 @@ export function Input({ className, invalid = false, ref, ...props }: InputProps)
       ref={ref}
       aria-invalid={invalid || undefined}
       className={cn(
-        'min-h-11 w-full rounded-md border border-input bg-surface px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:opacity-50',
+        'min-h-11 w-full rounded-md border border-input bg-surface px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50',
         className,
       )}
       {...props}

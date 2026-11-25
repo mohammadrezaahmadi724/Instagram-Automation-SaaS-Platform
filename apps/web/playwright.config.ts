@@ -8,10 +8,10 @@ export default defineConfig({
     ...devices['Desktop Chrome'],
   },
   webServer: {
-    command: 'pnpm exec next dev --port 3000',
+    command: 'pnpm exec next build && pnpm exec next start --port 3000',
     url: 'http://127.0.0.1:3000/api/health',
-    reuseExistingServer: true,
-    timeout: 120000,
+    reuseExistingServer: false,
+    timeout: 180000,
   },
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
 });
