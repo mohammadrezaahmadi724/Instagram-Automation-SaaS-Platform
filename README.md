@@ -1,8 +1,8 @@
 # [PRODUCT_NAME]
 
-وضعیت سند: پیش‌نویس فاز ۰
+وضعیت سند: پیش‌نویس فاز ۱الف
 
-تاریخ: 1405/09/04
+تاریخ: 1405/09/05
 
 ## Summary
 
@@ -10,9 +10,19 @@
 
 ## Status
 
-`Phase 0 — Foundation, no application code yet`
+`Phase 1A — Stack & design foundation decided, no application code yet`
 
-Stack انتخاب نشده و کد اپلیکیشن وجود ندارد. ثبت این وضعیت: [ADR-000](docs/04-architecture-decisions.md).
+تصمیم‌های Stack و سیستم طراحی ثبت شده‌اند. کد اپلیکیشن هنوز وجود ندارد.
+
+## Tech stack (accepted)
+
+- [ADR-001](docs/04-architecture-decisions.md): `TypeScript`، `Next.js`، `Node.js`، `pnpm`، `Prisma`، `zod`، و ابزار تست و کیفیت کد.
+- [ADR-002](docs/04-architecture-decisions.md): `PostgreSQL` با یک schema مشترک و ستون `workspace_id`، به‌علاوه‌ی Row-Level Security.
+- [ADR-003](docs/04-architecture-decisions.md): `BullMQ` روی `Redis` و worker جدا.
+- [ADR-012](docs/04-architecture-decisions.md): monorepo با `pnpm` workspaces و `Turborepo`.
+- [ADR-015](docs/04-architecture-decisions.md): `Tailwind CSS` 4، الگوی `shadcn/ui`، و سیستم طراحی.
+
+این ADRها تا بازبینی ناظر در نقشه‌ی راه `نیازمند بررسی` هستند. ADR-004 تا ADR-011 و ADR-013 و ADR-014 هنوز `Proposed`اند.
 
 ## Key principles
 
@@ -27,8 +37,7 @@ Stack انتخاب نشده و کد اپلیکیشن وجود ندارد. ثبت
 ## Repository layout
 
 ```
-bz50Instagram Automation SaaS Platform/
-├─ Instagram Automation SaaS Platform/   (empty nested folder, untouched)
+Instagram Automation SaaS Platform/
 ├─ .cursor/
 │  └─ rules/
 │     ├─ 00-project-core.mdc
@@ -47,8 +56,10 @@ bz50Instagram Automation SaaS Platform/
 │  ├─ 05-roadmap.md
 │  ├─ 06-security-requirements.md
 │  ├─ 07-ui-ux-principles.md
-│  └─ 08-glossary.md
+│  ├─ 08-glossary.md
+│  └─ 09-design-system.md
 ├─ .env.example
+├─ .gitattributes
 ├─ .git/
 ├─ .gitignore
 ├─ CHANGELOG.md
@@ -66,6 +77,7 @@ bz50Instagram Automation SaaS Platform/
 - [Security requirements](docs/06-security-requirements.md)
 - [UI/UX principles](docs/07-ui-ux-principles.md)
 - [Glossary](docs/08-glossary.md)
+- [Design system](docs/09-design-system.md)
 
 ## Collaboration
 
@@ -73,10 +85,14 @@ bz50Instagram Automation SaaS Platform/
 
 ## How to start
 
-در این فاز دستور نصب وجود ندارد. Stack هنوز انتخاب نشده است. شروع یعنی خواندن سندهای پوشه‌ی `docs/`، به‌ترتیب معرفی، محدوده‌ی محصول، محدودیت‌های API، تصمیم‌های معماری و نقشه‌ی راه.
+در این فاز دستور نصب وجود ندارد. اسکلت پروژه در تسک بعدی (01b) ساخته می‌شود. تا آن تسک، `package.json`، پوشه‌ی `apps/` و پوشه‌ی `packages/` ساخته نمی‌شوند.
 
-تا وقتی ADR مربوطه وضعیت `Accepted` نگرفته، کد اپلیکیشن، فایل پکیج، فریم‌ورک یا پوشه‌ی `src/` اضافه نمی‌شود.
+شروع یعنی خواندن [معرفی](docs/00-project-overview.md)، [محدوده](docs/01-product-scope.md)، [محدودیت API](docs/03-instagram-api-constraints.md)، [تصمیم‌های معماری](docs/04-architecture-decisions.md)، [نقشه‌ی راه](docs/05-roadmap.md) و [سیستم طراحی](docs/09-design-system.md).
 
-## Nested folder
+## Project root
 
-Root قطعی پروژه همین پوشه‌ی بیرونی است. پوشه‌ی تودرتوی `Instagram Automation SaaS Platform` اضافی است و بعد از تأیید مالک باید حذف شود. تا آن زمان دست‌نخورده می‌ماند و چیزی داخلش ساخته نمی‌شود. چون خالی است، Git آن را نشان نمی‌دهد.
+Root کامل این است:
+
+`D:\had va bz1 bz2\bz50Instagram Automation SaaS Platform\Instagram Automation SaaS Platform`
+
+پوشه‌ی والد (`D:\had va bz1 bz2\bz50Instagram Automation SaaS Platform`) فقط پوشه‌ی نگه‌دارنده است و جزو مخزن نیست. هیچ فایلی در پوشه‌ی والد ساخته، تغییر، یا حذف نمی‌شود.

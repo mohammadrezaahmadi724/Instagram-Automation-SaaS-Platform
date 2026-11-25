@@ -3,9 +3,9 @@ description: هویت پروژه، Root، جدایی از پروژه‌های د
 globs:
 alwaysApply: true
 ---
-- این مخزن فقط پروژه‌ی «Instagram Automation SaaS Platform» است. Root: D:\had va bz1 bz2\bz50Instagram Automation SaaS Platform
+- این مخزن فقط پروژه‌ی «Instagram Automation SaaS Platform» است. Root: D:\had va bz1 bz2\bz50Instagram Automation SaaS Platform\Instagram Automation SaaS Platform
 - هرگز روی سایت راه‌انداز فست‌فود (rahandazifastfood.ir) یا هر پروژه، پوشه یا مخزن دیگری کار نکن و به آن ارجاع نده.
-- پوشه‌ی تودرتوی «Instagram Automation SaaS Platform» داخل Root را بدون دستور صریح مالک حذف، جابه‌جا یا تغییر نام نده.
+- پوشه‌ی والد (D:\had va bz1 bz2\bz50Instagram Automation SaaS Platform) جزو مخزن نیست. هیچ فایلی در آن نساز، تغییر نده یا حذف نکن. همه‌ی کارها فقط داخل Root انجام شود.
 - فرضیات را به‌جای اطلاعات واقعی ننویس. اگر اطلاعات نداری، توقف کن و بپرس یا TODO بگذار.
 - مستندات و پیام‌های گزارش فارسی باشند؛ شناسه‌های فنی، کد، نام فایل و کامیت انگلیسی.
 - منبع حقیقت محصول پوشه‌ی docs/ است. قبل از هر تسک، اسناد مرتبط را بخوان.
