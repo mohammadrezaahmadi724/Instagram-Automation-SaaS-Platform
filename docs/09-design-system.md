@@ -1,12 +1,12 @@
 # سیستم طراحی
 
-وضعیت سند: پیش‌نویس فاز ۱الف
+وضعیت سند: پیش‌نویس فاز ۱ب
 
-تاریخ: 1405/09/05
+تاریخ: 1405/09/04
 
-این سند منبع حقیقت ظاهر [PRODUCT_NAME] است. 01b باید توکن‌ها را مستقیم به CSS variables در `packages/ui` تبدیل کند. مقدارهای رنگ، اندازه و حرکت پیشنهاد ATLAS هستند و عیناً ثبت شده‌اند. اگر کنتراست یک جفت از حد AA برای متن عادی پایین‌تر است، مقدار عوض نشده و در جدول `❌` دارد.
+این سند منبع حقیقت ظاهر دایرکتورا است. توکن‌های رنگ در `packages/ui/src/tokens.css` به CSS variables تبدیل می‌شوند. مقدارهای رنگ پالت لوگوی دایرکتورا هستند و عیناً ثبت شده‌اند. همه‌ی جفت‌های متنی جدول بخش ۳ حد AA را پاس می‌کنند.
 
-هویت بصری: آرام، دقیق و premium. پالت `Iris` و `Ink` است. ماژنتا، صورتی، و گرادیان نارنجی-صورتی رابط اینستاگرام ممنوع است. کپی Directam ممنوع است.
+هویت بصری: آرام، دقیق و premium. پالت لوگوی دایرکتورا است: `blue`، `cyan`، `ink`، `orange` و `amber`. ماژنتا، صورتی، و گرادیان نارنجی-صورتی رابط اینستاگرام ممنوع است. کپی Directam ممنوع است.
 
 <a id="s1"></a>
 ## 1. اصول طراحی
@@ -44,13 +44,13 @@
 RTL واقعی، تایپوگرافی فارسی باکیفیت، اعداد فارسی و تقویم شمسی.
 
 - درست: «۱۲٬۵۰۰٬۰۰۰ تومان» و «۵ آذر ۱۴۰۵».
-- غلط: `12500000 IRR` و `2026-11-26` در متن رابط.
+- غلط: `12500000 IRR` و `2026-11-25` در متن رابط.
 
 ### 6. دسترس‌پذیر برای همه
 
 WCAG 2.2 AA حداقل است، نه هدف.
 
-- درست: حلقه‌ی focus با کیبورد دیده می‌شود و کنتراست متن عادی حداقل ۴٫۵ است، مگر جایی که جدول کنتراست `❌` ثبت کرده و هنوز اصلاح برند نشده است.
+- درست: حلقه‌ی focus با کیبورد دیده می‌شود و کنتراست متن عادی حداقل ۴٫۵ است. جفت‌های جدول بخش ۳ این حد را پاس می‌کنند. مرز فیلد با `--border-input` حد غیرمتنی ۳ را پاس می‌کند.
 - غلط: حذف حلقه‌ی focus برای ظاهر تمیزتر.
 
 ### 7. هویت مستقل
@@ -63,97 +63,98 @@ WCAG 2.2 AA حداقل است، نه هدف.
 <a id="s2"></a>
 ## 2. رنگ — توکن‌های پایه
 
-مقادیر زیر عیناً ثبت شده‌اند.
+مقادیر زیر از پالت لوگوی دایرکتورا آمده‌اند و عیناً ثبت شده‌اند. پله‌ی خالی در جدول با «—» آمده است و توکن ندارد.
 
-### Brand — Iris
+| scale | 0 | 25 | 50 | 100 | 200 | 300 | 400 | 450 | 500 | 600 | 700 | 800 | 850 | 900 | 950 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `blue` | — | — | `#EEF5FF` | `#D9E8FF` | `#BAD5FF` | `#8BB9FE` | `#5596F8` | — | `#2B76EE` | `#0B5BD3` | `#0A48AB` | `#0E3D8A` | — | `#11346F` | `#0C2148` |
+| `cyan` | — | — | `#ECFAFF` | `#D3F2FE` | `#A9E6FD` | `#6DD5FB` | `#2BC0F7` | — | `#12B5F5` | `#008CCB` | `#0170A4` | `#065D87` | — | `#0B4D70` | `#08314A` |
+| `ink` | `#FFFFFF` | `#FBFCFE` | `#F5F7FB` | `#ECF0F7` | `#DCE3EE` | `#C2CCDC` | `#8F9BB3` | `#7A869E` | `#5F6C87` | `#48546E` | `#343F57` | `#1F2A44` | `#15213D` | `#0B1B3F` | `#06122C` |
+| `orange` | — | — | `#FFF5EC` | `#FFE7D1` | `#FFCDA3` | `#FFAD6B` | `#FF8F3A` | — | `#FF7A1A` | `#E85F05` | `#B84A06` | `#923C0D` | — | `#76320F` | `#431705` |
+| `amber` | — | — | `#FFF9E6` | `#FFF0BF` | `#FFE180` | `#FFD040` | `#FFC21A` | — | `#FFB000` | `#D98E00` | `#A86A00` | `#855407` | — | `#6E450C` | `#3F2603` |
+| `green` | — | — | `#EAFBF1` | `#CDF5DE` | `#9EEBBF` | `#63D99A` | `#2EC177` | — | `#14A660` | `#0C8A4F` | `#0B6E41` | `#0D5736` | — | `#0C472E` | `#032817` |
+| `red` | — | — | `#FFF1F1` | `#FFDFDF` | `#FFC4C4` | `#FF9B9B` | `#F96666` | — | `#EF4040` | `#D42828` | `#B01E1E` | `#911D1D` | — | `#781E1E` | `#420B0B` |
 
-آبی‌بنفش آرام. ماژنتا نیست.
+نقش‌ها:
 
-| توکن | Hex |
-| --- | --- |
-| `iris-50` | `#F2F3FF` |
-| `iris-100` | `#E4E6FF` |
-| `iris-200` | `#CDD1FE` |
-| `iris-300` | `#ABB1FC` |
-| `iris-400` | `#8A8CF8` |
-| `iris-500` | `#6E6AF0` |
-| `iris-600` | `#5B53E3` |
-| `iris-700` | `#4C43C8` |
-| `iris-800` | `#3F38A2` |
-| `iris-900` | `#363381` |
-| `iris-950` | `#211E4C` |
+- `blue`: رنگ اصلی برند. دکمه‌ی اصلی، لینک، فوکوس و انتخاب.
+- `cyan`: مکمل گرادیان برند و رنگ info.
+- `ink`: خنثیِ سرمه‌ای برای متن، سطح و مرز. متن اصلی `ink-900` همان سرمه‌ای لوگو است.
+- `orange` و `amber`: فقط برای CTA ویژه، هایلایت و نشان‌ها. رنگ پس‌زمینه‌ی بزرگ یا متن بدنه نیستند.
+- `green`: success.
+- `red`: danger.
+- warning از `amber` ساخته می‌شود.
 
-### Neutral — Ink
+### گرادیان‌ها
 
-خاکستری سرد.
+توکن مستقل‌اند:
 
-| توکن | Hex |
-| --- | --- |
-| `ink-0` | `#FFFFFF` |
-| `ink-25` | `#FCFCFD` |
-| `ink-50` | `#F7F8FA` |
-| `ink-100` | `#EEF0F4` |
-| `ink-200` | `#E1E4EB` |
-| `ink-300` | `#C9CED9` |
-| `ink-400` | `#9AA2B3` |
-| `ink-500` | `#6B7487` |
-| `ink-600` | `#4E5668` |
-| `ink-700` | `#3A4150` |
-| `ink-800` | `#262B36` |
-| `ink-900` | `#171A22` |
-| `ink-950` | `#0D0F14` |
-
-### Semantic
-
-| نقش | پایه (600) | پس‌زمینه‌ی روشن | پس‌زمینه‌ی تیره |
-| --- | --- | --- | --- |
-| success | `#12A150` | `#E8F7EE` | `#0F2A1C` |
-| warning | `#B45309` | `#FEF3E2` | `#2E2210` |
-| danger | `#DC2626` | `#FDECEC` | `#2F1414` |
-| info | `#0284C7` | `#E6F4FB` | `#0F2433` |
+- `--gradient-brand: linear-gradient(135deg, blue-600, cyan-500)`. تزئینی است: نشانه‌ی برند، نوار hero، حاشیه‌ی کارت ویژه و آیکون. متن روی آن ممنوع است، چون سفید روی `cyan-500` فقط ۲٫۳۵ کنتراست دارد.
+- `--gradient-accent: linear-gradient(135deg, orange-500, amber-500)`. برای CTA ویژه و نشان «جدید». متن روی آن فقط `ink-900` است (≥ ۶٫۴۸). متن سفید روی نارنجی ممنوع است (۲٫۶۱).
+- در RTL، جهت گرادیان آینه نمی‌شود، چون معنای جهتی ندارد.
 
 ### Chart palette
 
-`chart-1..6`: `#5B53E3`، `#0EA5A4`، `#F59E0B`، `#E1567C`، `#3B82F6`، `#84CC16`.
+`chart-1=blue-600`، `chart-2=cyan-500`، `chart-3=orange-500`، `chart-4=green-500`، `chart-5=#7C5CE0` (بنفش؛ فقط برای نمودار)، `chart-6=amber-500`.
 
-هر سری علاوه بر رنگ، نشانه‌ی دیگری هم دارد: الگو، برچسب یا شکل نقطه. معنا فقط با رنگ منتقل نمی‌شود. `chart-4` صورتی نمودار است، نه رنگ برند و نه ماژنتای Directam. در سطح بزرگ به‌عنوان پس‌زمینه یا دکمه‌ی اصلی استفاده نمی‌شود.
+هر سری علاوه بر رنگ، نشانه‌ی دیگری هم دارد: الگو، برچسب یا شکل نقطه. معنا فقط با رنگ منتقل نمی‌شود. `chart-5` بنفش نمودار است، نه رنگ برند. در سطح بزرگ به‌عنوان پس‌زمینه یا دکمه‌ی اصلی استفاده نمی‌شود.
 
 <a id="s3"></a>
 ## 3. رنگ — توکن‌های معنایی
 
-کامپوننت‌ها فقط از این توکن‌ها استفاده می‌کنند، نه از hex پایه.
+کامپوننت‌ها فقط از این توکن‌ها استفاده می‌کنند، نه از hex پایه. تم تیره hex واقعی خودش را دارد.
 
 | توکن | Light | Dark |
 | --- | --- | --- |
-| `--background` | `ink-50` | `ink-950` |
-| `--surface` | `ink-0` | `ink-900` |
-| `--surface-raised` | `ink-0` + shadow | `ink-800` |
-| `--surface-sunken` | `ink-100` | `#0A0C10` |
-| `--border` | `ink-200` | `ink-800` |
-| `--border-strong` | `ink-300` | `ink-700` |
-| `--text-primary` | `ink-900` | `ink-50` |
-| `--text-secondary` | `ink-600` | `ink-300` |
-| `--text-muted` | `ink-500` | `ink-400` |
-| `--text-inverse` | `ink-0` | `ink-950` |
-| `--primary` | `iris-600` | `iris-400` |
-| `--primary-hover` | `iris-700` | `iris-300` |
-| `--primary-foreground` | `ink-0` | `ink-950` |
-| `--primary-subtle` | `iris-50` | `iris-950` |
-| `--ring` | `iris-500` | `iris-400` |
-| `--success` | `#12A150` | `#12A150` |
-| `--success-subtle` | `#E8F7EE` | `#0F2A1C` |
-| `--success-foreground` | `ink-0` | `ink-950` |
-| `--warning` | `#B45309` | `#B45309` |
-| `--warning-subtle` | `#FEF3E2` | `#2E2210` |
-| `--warning-foreground` | `ink-0` | `ink-950` |
-| `--danger` | `#DC2626` | `#DC2626` |
-| `--danger-subtle` | `#FDECEC` | `#2F1414` |
-| `--danger-foreground` | `ink-0` | `ink-950` |
-| `--info` | `#0284C7` | `#0284C7` |
-| `--info-subtle` | `#E6F4FB` | `#0F2433` |
-| `--info-foreground` | `ink-0` | `ink-950` |
+| `--background` | `ink-50` (`#F5F7FB`) | `ink-950` (`#06122C`) |
+| `--surface` | `ink-0` (`#FFFFFF`) | `ink-900` (`#0B1B3F`) |
+| `--surface-raised` | `ink-0` (`#FFFFFF`) | `ink-850` (`#15213D`) |
+| `--surface-sunken` | `ink-100` (`#ECF0F7`) | `ink-950` (`#06122C`) |
+| `--border` | `ink-200` (`#DCE3EE`) | `ink-800` (`#1F2A44`) |
+| `--border-strong` | `ink-300` (`#C2CCDC`) | `ink-700` (`#343F57`) |
+| `--text-primary` | `ink-900` (`#0B1B3F`) | `ink-50` (`#F5F7FB`) |
+| `--text-secondary` | `ink-600` (`#48546E`) | `ink-300` (`#C2CCDC`) |
+| `--text-muted` | `ink-500` (`#5F6C87`) | `ink-400` (`#8F9BB3`) |
+| `--text-inverse` | `ink-0` (`#FFFFFF`) | `ink-950` (`#06122C`) |
+| `--primary` | `blue-600` (`#0B5BD3`) | `blue-400` (`#5596F8`) |
+| `--primary-hover` | `blue-700` (`#0A48AB`) | `blue-300` (`#8BB9FE`) |
+| `--primary-foreground` | `ink-0` (`#FFFFFF`) | `ink-950` (`#06122C`) |
+| `--primary-subtle` | `blue-50` (`#EEF5FF`) | `blue-950` (`#0C2148`) |
+| `--primary-subtle-foreground` | `blue-700` (`#0A48AB`) | `blue-200` (`#BAD5FF`) |
+| `--accent` | `orange-500` (`#FF7A1A`) | `orange-400` (`#FF8F3A`) |
+| `--accent-hover` | `orange-600` (`#E85F05`) | `orange-300` (`#FFAD6B`) |
+| `--accent-foreground` | `ink-900` (`#0B1B3F`) | `ink-950` (`#06122C`) |
+| `--accent-subtle` | `orange-50` (`#FFF5EC`) | `orange-950` (`#431705`) |
+| `--accent-subtle-foreground` | `orange-700` (`#B84A06`) | `orange-200` (`#FFCDA3`) |
+| `--success` | `green-700` (`#0B6E41`) | `green-400` (`#2EC177`) |
+| `--success-foreground` | `ink-0` (`#FFFFFF`) | `ink-950` (`#06122C`) |
+| `--success-subtle` | `green-50` (`#EAFBF1`) | `green-950` (`#032817`) |
+| `--success-subtle-foreground` | `green-700` (`#0B6E41`) | `green-300` (`#63D99A`) |
+| `--warning` | `amber-500` (`#FFB000`) | `amber-400` (`#FFC21A`) |
+| `--warning-foreground` | `ink-900` (`#0B1B3F`) | `ink-950` (`#06122C`) |
+| `--warning-subtle` | `amber-50` (`#FFF9E6`) | `amber-950` (`#3F2603`) |
+| `--warning-subtle-foreground` | `amber-800` (`#855407`) | `amber-300` (`#FFD040`) |
+| `--danger` | `red-600` (`#D42828`) | `red-400` (`#F96666`) |
+| `--danger-foreground` | `ink-0` (`#FFFFFF`) | `ink-950` (`#06122C`) |
+| `--danger-subtle` | `red-50` (`#FFF1F1`) | `red-950` (`#420B0B`) |
+| `--danger-subtle-foreground` | `red-700` (`#B01E1E`) | `red-300` (`#FF9B9B`) |
+| `--info` | `cyan-700` (`#0170A4`) | `cyan-400` (`#2BC0F7`) |
+| `--info-foreground` | `ink-0` (`#FFFFFF`) | `ink-950` (`#06122C`) |
+| `--info-subtle` | `cyan-50` (`#ECFAFF`) | `cyan-950` (`#08314A`) |
+| `--info-subtle-foreground` | `cyan-800` (`#065D87`) | `cyan-300` (`#6DD5FB`) |
+| `--ring` | `blue-500` (`#2B76EE`) | `blue-400` (`#5596F8`) |
+| `--link` | `blue-700` (`#0A48AB`) | `blue-300` (`#8BB9FE`) |
+| `--border-input` | `ink-450` (`#7A869E`) | `ink-450` (`#7A869E`) |
 
-برای success و warning و danger و info فقط یک رنگ پایه داده شده است. در هر دو تم همان hex استفاده می‌شود. این انتخاب **استنباطی** است، چون رمپ روشن‌تر برای تم تیره در ورودی تسک نبود و hex تازه ساخته نشد. `--*-foreground` از الگوی `--primary-foreground` می‌آید: در روشن `ink-0` و در تیره `ink-950`. جایی که این جفت AA را رد کند، مقدار عوض نشده است.
+`Input`، `Select` و `Checkbox` برای مرز از `--border-input` استفاده می‌کنند. `--border-strong` روی سفید برای مرز فیلد کافی نیست.
+
+قواعد سایه در تم تیره بدون تغییر می‌ماند: عمق با `surface-raised` و `border` ساخته می‌شود. فوکوس در هر دو تم از `--ring` استفاده می‌کند.
+
+### قاعده‌ی متن روی رنگ‌ها
+
+- روی `primary`، `success`، `danger` و `info` فقط `*-foreground` (سفید در تم روشن).
+- روی `accent` و `warning` فقط `ink-900` یا `ink-950`.
+- روی گرادیان برند هیچ متنی نیاید.
 
 ### فرمول کنتراست
 
@@ -164,44 +165,45 @@ WCAG 2.2 AA حداقل است، نه هدف.
 3. درخشندگی نسبی: `L = 0.2126 R + 0.7152 G + 0.0722 B`.
 4. نسبت: `(L روشن‌تر + 0.05) / (L تیره‌تر + 0.05)`.
 
-عددها با همین فرمول و بدون پکیج حساب شده‌اند و تا دو رقم اعشار گرد شده‌اند. حد قبولی متن عادی ۴٫۵ است. حد متن بزرگ و عنصر غیرمتنی ۳ است. `❌` یعنی برای متن عادی زیر ۴٫۵ است. اگر همان عدد هنوز ≥ ۳ باشد، برای متن بزرگ یا عنصر غیرمتنی قبول است و در ستون یادداشت آمده است.
+عددها با همین فرمول و بدون پکیج حساب شده‌اند و تا دو رقم اعشار گرد شده‌اند. حد قبولی متن عادی ۴٫۵ است. حد متن بزرگ و عنصر غیرمتنی ۳ است.
 
 ### جدول کنتراست
 
-| جفت | حالت | نسبت | متن عادی | یادداشت |
-| --- | --- | --- | --- | --- |
-| `--text-primary` روی `--background` | Light | ۱۶٫۳۷ | ✅ | |
-| `--text-primary` روی `--surface` | Light | ۱۷٫۳۹ | ✅ | |
-| `--text-secondary` روی `--background` | Light | ۶٫۹۲ | ✅ | |
-| `--text-secondary` روی `--surface` | Light | ۷٫۳۶ | ✅ | |
-| `--text-muted` روی `--background` | Light | ۴٫۴۲ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--text-muted` روی `--surface` | Light | ۴٫۶۹ | ✅ | |
-| `--primary-foreground` روی `--primary` | Light | ۵٫۵۴ | ✅ | |
-| `--text-primary` روی `--background` | Dark | ۱۸٫۰۴ | ✅ | |
-| `--text-primary` روی `--surface` | Dark | ۱۶٫۳۷ | ✅ | |
-| `--text-secondary` روی `--background` | Dark | ۱۲٫۱۵ | ✅ | |
-| `--text-secondary` روی `--surface` | Dark | ۱۱٫۰۳ | ✅ | |
-| `--text-muted` روی `--background` | Dark | ۷٫۴۸ | ✅ | |
-| `--text-muted` روی `--surface` | Dark | ۶٫۷۹ | ✅ | |
-| `--primary-foreground` روی `--primary` | Dark | ۶٫۵۶ | ✅ | |
-| `--success` روی `--success-subtle` | Light | ۳٫۰۴ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--warning` روی `--warning-subtle` | Light | ۴٫۵۸ | ✅ | |
-| `--danger` روی `--danger-subtle` | Light | ۴٫۲۳ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--info` روی `--info-subtle` | Light | ۳٫۶۵ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--success` روی `--success-subtle` | Dark | ۴٫۵۶ | ✅ | |
-| `--warning` روی `--warning-subtle` | Dark | ۳٫۰۹ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--danger` روی `--danger-subtle` | Dark | ۳٫۵۳ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--info` روی `--info-subtle` | Dark | ۳٫۸۸ | ❌ | برای متن بزرگ و UI (≥ ۳) قبول است |
-| `--success-foreground` روی `--success` | Light | ۳٫۳۷ | ❌ | `ink-0` روی `#12A150`. برای متن بزرگ و UI قبول است |
-| `--warning-foreground` روی `--warning` | Light | ۵٫۰۲ | ✅ | |
-| `--danger-foreground` روی `--danger` | Light | ۴٫۸۳ | ✅ | |
-| `--info-foreground` روی `--info` | Light | ۴٫۱۰ | ❌ | `ink-0` روی `#0284C7`. برای متن بزرگ و UI قبول است |
-| `--success-foreground` روی `--success` | Dark | ۵٫۷۰ | ✅ | `ink-950` روی `#12A150` |
-| `--warning-foreground` روی `--warning` | Dark | ۳٫۸۲ | ❌ | `ink-950` روی `#B45309`. برای متن بزرگ و UI قبول است |
-| `--danger-foreground` روی `--danger` | Dark | ۳٫۹۷ | ❌ | `ink-950` روی `#DC2626`. برای متن بزرگ و UI قبول است |
-| `--info-foreground` روی `--info` | Dark | ۴٫۶۸ | ✅ | |
+نتیجه: صفر خطای AA. نوشته‌ی استنباطی قبلی درباره‌ی یکسان بودن hex تم تیره با تم روشن حذف شده است.
 
-جفت‌های `❌` در این فاز اصلاح نشده‌اند. متن عادی روی `--text-muted` در تم روشن، و متن دکمه‌ی success یا info در تم روشن، تا تصمیم بعدی برند نباید به‌عنوان تنها متن بدنه‌ی کوچک استفاده شوند. آیکون و متن بزرگ همان جفت‌ها حد ۳ را رد می‌کنند.
+| جفت (متن روی پس‌زمینه) | Light | Dark | حد |
+| --- | --- | --- | --- |
+| `text-primary` / `background` | 15.75 ✅ | 17.32 ✅ | 4.5 |
+| `text-primary` / `surface` | 16.90 ✅ | 15.75 ✅ | 4.5 |
+| `text-primary` / `surface-raised` | 16.90 ✅ | 14.87 ✅ | 4.5 |
+| `text-secondary` / `background` | 7.07 ✅ | 11.47 ✅ | 4.5 |
+| `text-secondary` / `surface` | 7.58 ✅ | 10.43 ✅ | 4.5 |
+| `text-muted` / `background` | 4.92 ✅ | 6.64 ✅ | 4.5 |
+| `text-muted` / `surface` | 5.27 ✅ | 6.04 ✅ | 4.5 |
+| `text-muted` / `surface-sunken` | 4.61 ✅ | 6.64 ✅ | 4.5 |
+| `link` / `background` | 7.75 ✅ | 9.26 ✅ | 4.5 |
+| `link` / `surface` | 8.31 ✅ | 8.42 ✅ | 4.5 |
+| `primary-foreground` / `primary` | 6.08 ✅ | 6.28 ✅ | 4.5 |
+| `primary-foreground` / `primary-hover` | 8.31 ✅ | 9.26 ✅ | 4.5 |
+| `primary-subtle-foreground` / `primary-subtle` | 7.57 ✅ | 10.59 ✅ | 4.5 |
+| `accent-foreground` / `accent` | 6.48 ✅ | 8.17 ✅ | 4.5 |
+| `accent-foreground` / `accent-hover` | 4.88 ✅ | 10.12 ✅ | 4.5 |
+| `accent-subtle-foreground` / `accent-subtle` | 4.86 ✅ | 10.64 ✅ | 4.5 |
+| `success-foreground` / `success` | 6.32 ✅ | 7.97 ✅ | 4.5 |
+| `success-subtle-foreground` / `success-subtle` | 5.89 ✅ | 9.03 ✅ | 4.5 |
+| `warning-foreground` / `warning` | 9.22 ✅ | 11.48 ✅ | 4.5 |
+| `warning-subtle-foreground` / `warning-subtle` | 6.10 ✅ | 9.63 ✅ | 4.5 |
+| `danger-foreground` / `danger` | 5.08 ✅ | 6.30 ✅ | 4.5 |
+| `danger-subtle-foreground` / `danger-subtle` | 6.26 ✅ | 8.11 ✅ | 4.5 |
+| `info-foreground` / `info` | 5.45 ✅ | 8.83 ✅ | 4.5 |
+| `info-subtle-foreground` / `info-subtle` | 6.73 ✅ | 8.11 ✅ | 4.5 |
+| `primary` / `surface` | 6.08 ✅ | 5.72 ✅ | 4.5 |
+| `danger` / `surface` | 5.08 ✅ | 5.73 ✅ | 4.5 |
+| `success` / `surface` | 6.32 ✅ | 7.25 ✅ | 4.5 |
+| `info` / `surface` | 5.45 ✅ | 8.03 ✅ | 4.5 |
+| `border-input` / `surface` | 3.66 ✅ | 4.61 ✅ | 3.0 |
+| `border-input` / `background` | 3.42 ✅ | 5.07 ✅ | 3.0 |
+| `ring` / `surface` | 4.26 ✅ | 5.72 ✅ | 3.0 |
 
 <a id="s4"></a>
 ## 4. تایپوگرافی
@@ -358,7 +360,7 @@ easing:
 
 ### Input
 
-هدف: متن یک‌خطی. size: `sm`، `md`، `lg`. stateها شامل error با متن زیر فیلد. کیبورد: Tab به ترتیب RTL. `dir="ltr"` فقط برای ایمیل، URL، شناسه و شماره. label جدا از placeholder است.
+هدف: متن یک‌خطی. size: `sm`، `md`، `lg`. stateها شامل error با متن زیر فیلد. مرز فیلد از `--border-input` است، نه از `--border-strong`. کیبورد: Tab به ترتیب RTL. `dir="ltr"` فقط برای ایمیل، URL، شناسه و شماره. label جدا از placeholder است.
 
 ### Textarea
 
@@ -366,7 +368,7 @@ easing:
 
 ### Select
 
-هدف: انتخاب از فهرست بسته. size: `sm`، `md`. stateها شامل error. کیبورد: پیکان، Enter، Esc، نویسه‌ی اول برای پرش. RTL: چک انتخاب در سمت شروع. موبایل: فهرست به‌صورت sheet اگر گزینه‌ها زیاد باشند.
+هدف: انتخاب از فهرست بسته. size: `sm`، `md`. stateها شامل error. مرز فیلد از `--border-input` است. کیبورد: پیکان، Enter، Esc، نویسه‌ی اول برای پرش. RTL: چک انتخاب در سمت شروع. موبایل: فهرست به‌صورت sheet اگر گزینه‌ها زیاد باشند.
 
 ### Combobox
 
@@ -374,7 +376,7 @@ easing:
 
 ### Checkbox
 
-هدف: انتخاب چندتایی. size: ۲۰px با هدف لمسی ۴۴px. stateها شامل `indeterminate`. error برای گروه اجباری. کیبورد: Space.toggle. RTL: مربع در سمت راست برچسب.
+هدف: انتخاب چندتایی. size: ۲۰px با هدف لمسی ۴۴px. stateها شامل `indeterminate`. مرز مربع از `--border-input` است. error برای گروه اجباری. کیبورد: Space.toggle. RTL: مربع در سمت راست برچسب.
 
 ### Radio
 
@@ -729,13 +731,17 @@ WCAG 2.2 AA حداقل است.
 20. عدد جدول tabular است.
 21. ماژنتا و گرادیان اینستاگرام در صفحه نیست.
 22. landmark و لینک پرش به محتوا وجود دارند.
-23. جفت رنگی `❌` بخش ۳ برای متن بدنه‌ی کوچک استفاده نشده است.
+23. جفت‌های جدول کنتراست بخش ۳ حد خود را پاس می‌کنند و متن بدنه از جفت ردشده استفاده نمی‌کند، چون جفت ردشده‌ای در آن جدول نیست.
 24. فونت از CDN نیامده است.
 
 <a id="s15"></a>
 ## 15. هویت برند
 
-تا تصمیم ADR-014، لوگو یک wordmark موقت متنی با نام `[PRODUCT_NAME]` و یک نشانه‌ی ساده‌ی هندسی است. نشان در 01b به‌صورت SVG ساخته می‌شود. تغییر برند فقط با تغییر توکن‌ها ممکن است. هیچ رنگی در کامپوننت hard-code نمی‌شود.
+- نام: «دایرکتورا» و «Directora» (ADR-014). wordmark فارسی با `Vazirmatn` در وزن ۸۰۰.
+- لوگو: `apps/web/public/brand/directora-logo.png`. فایل را مالک در همین مسیر کپی می‌کند.
+- ریسک لوگو در تم تیره: متن لوگو سرمه‌ای است و روی پس‌زمینه‌ی تیره دیده نمی‌شود. تا وقتی نسخه‌ی روشن یا SVG لوگو آماده نشده، در تم تیره لوگو روی یک «پلاک» `ink-0` با `radius-lg` و padding نمایش داده می‌شود. `TODO(owner-decision): نسخه‌ی SVG و نسخه‌ی تم تیره‌ی لوگو`.
+- فاصله‌ی امن دور لوگو حداقل نصف ارتفاع نشانه است. حداقل عرض لوگو ۹۶px است.
+- برند تنها از طریق توکن‌ها تغییر می‌کند. هیچ رنگی در کامپوننت hard-code نمی‌شود.
 
 <a id="s16"></a>
 ## 16. منابع و مجوزها
