@@ -1,0 +1,33 @@
+# فقط توسعه‌ی محلی؛ هرگز در production استفاده نشود.
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-directora}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_only_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-directora}
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - directora_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-directora} -d ${POSTGRES_DB:-directora}']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - directora_redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  directora_pg:
+  directora_redis:

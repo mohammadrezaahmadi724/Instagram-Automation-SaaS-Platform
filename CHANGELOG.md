@@ -8,12 +8,19 @@
 
 ## [0.2.0-phase1b] - 1405/09/04
 
+### Added
+
+- اسکلت monorepo با `apps/web`، `apps/worker` و پکیج‌های `@directora/ui`، `@directora/core`، `@directora/db`، `@directora/instagram` و `@directora/config`.
+- `docs/10-database.md` برای schema اولیه و طرح RLS.
+- صفحه‌ی نمایش سیستم طراحی، `GET /api/health`، و worker با صف واقعی `system`.
+
 ### Changed
 
 - پالت `Iris` با پالت لوگوی دایرکتورا (`blue`، `cyan`، `ink`، `orange`، `amber`) جایگزین شد. توکن‌های تم تیره و `--border-input` در `docs/09-design-system.md` ثبت شد.
 - `ADR-014` به نام برند محدود و `Accepted` شد: دایرکتورا / Directora. دامنه به `ADR-016` با وضعیت `Proposed` منتقل شد.
 - `ADR-017` نسخه‌های پین‌شده‌ی اسکلت را با وضعیت `Accepted` ثبت کرد.
 - نام موقت محصول در سندهای جاری به «دایرکتورا» تغییر کرد.
+- `QUEUE_DRIVER` از `.env.example` حذف شد، چون ADR-003 صف را روی BullMQ ثابت کرده است.
 
 ### Fixed
 

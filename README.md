@@ -10,9 +10,9 @@
 
 ## Status
 
-`Phase 1A — Stack & design foundation decided, no application code yet`
+`Phase 1B — Runnable monorepo scaffold, awaiting supervisor review`
 
-تصمیم‌های Stack و سیستم طراحی ثبت شده‌اند. کد اپلیکیشن هنوز وجود ندارد.
+اسکلت monorepo، توکن‌های برند، و schema اولیه ساخته شده‌اند. قابلیت محصول هنوز وجود ندارد. فاز ۱ب تا تأیید ناظر `در حال انجام` است.
 
 ## Tech stack (accepted)
 
@@ -46,7 +46,17 @@ Instagram Automation SaaS Platform/
 │     ├─ 03-security.mdc
 │     ├─ 04-architecture-and-adr.mdc
 │     ├─ 05-workflow-and-reporting.mdc
-│     └─ 06-ui-ux.mdc
+│     ├─ 06-ui-ux.mdc
+│     └─ 07-code-conventions.mdc
+├─ apps/
+│  ├─ web/
+│  └─ worker/
+├─ packages/
+│  ├─ config/
+│  ├─ core/
+│  ├─ db/
+│  ├─ instagram/
+│  └─ ui/
 ├─ docs/
 │  ├─ 00-project-overview.md
 │  ├─ 01-product-scope.md
@@ -57,7 +67,8 @@ Instagram Automation SaaS Platform/
 │  ├─ 06-security-requirements.md
 │  ├─ 07-ui-ux-principles.md
 │  ├─ 08-glossary.md
-│  └─ 09-design-system.md
+│  ├─ 09-design-system.md
+│  └─ 10-database.md
 ├─ .env.example
 ├─ .gitattributes
 ├─ .git/
@@ -78,16 +89,32 @@ Instagram Automation SaaS Platform/
 - [UI/UX principles](docs/07-ui-ux-principles.md)
 - [Glossary](docs/08-glossary.md)
 - [Design system](docs/09-design-system.md)
+- [Database design](docs/10-database.md)
 
 ## Collaboration
 
 مالک محصول (Mamal) تسک را تعریف می‌کند. ناظر فنی (ATLAS) تحلیل می‌کند و پرامپت می‌نویسد. مجری (Cursor) اجرا و گزارش می‌دهد. ATLAS خروجی را با فایل‌های واقعی تطبیق می‌دهد و تأیید یا پرامپت اصلاحی صادر می‌کند. سپس نقشه‌ی راه به‌روز می‌شود.
 
+## Getting started
+
+پیش‌نیاز: Node 24، pnpm 12.23.0، و Docker Desktop.
+
+```powershell
+pnpm install
+pnpm services:up
+pnpm db:migrate:dev
+pnpm dev
+pnpm verify
+pnpm test:e2e
+```
+
+## Brand assets
+
+لوگوی PNG را در `apps/web/public/brand/directora-logo.png` بگذارید. تا وقتی فایل نباشد، صفحه wordmark متنی نشان می‌دهد. در تم تیره لوگو روی پلاک سفید می‌آید.
+
 ## How to start
 
-در این فاز دستور نصب وجود ندارد. اسکلت پروژه در تسک بعدی (01b) ساخته می‌شود. تا آن تسک، `package.json`، پوشه‌ی `apps/` و پوشه‌ی `packages/` ساخته نمی‌شوند.
-
-شروع یعنی خواندن [معرفی](docs/00-project-overview.md)، [محدوده](docs/01-product-scope.md)، [محدودیت API](docs/03-instagram-api-constraints.md)، [تصمیم‌های معماری](docs/04-architecture-decisions.md)، [نقشه‌ی راه](docs/05-roadmap.md) و [سیستم طراحی](docs/09-design-system.md).
+شروع یعنی خواندن [معرفی](docs/00-project-overview.md)، [محدوده](docs/01-product-scope.md)، [محدودیت API](docs/03-instagram-api-constraints.md)، [تصمیم‌های معماری](docs/04-architecture-decisions.md)، [نقشه‌ی راه](docs/05-roadmap.md)، [سیستم طراحی](docs/09-design-system.md) و [طراحی دیتابیس](docs/10-database.md).
 
 ## Project root
 

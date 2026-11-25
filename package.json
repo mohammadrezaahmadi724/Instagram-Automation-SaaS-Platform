@@ -1,0 +1,29 @@
+{
+  "name": "directora",
+  "private": true,
+  "packageManager": "pnpm@12.23.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "test:e2e": "turbo test:e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:design": "node scripts/check-design.mjs",
+    "db:generate": "turbo db:generate",
+    "db:migrate:dev": "turbo db:migrate:dev",
+    "db:validate": "turbo db:validate",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:design && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "prettier": "3.10.1",
+    "turbo": "2.11.13"
+  }
+}

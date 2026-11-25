@@ -71,7 +71,7 @@
 
 ## 7. وضعیت فعلی
 
-فاز ۱الف. Stack در ADR-001 انتخاب شد: Next.js، Node.js، PostgreSQL، Prisma، BullMQ و Redis، در monorepo. سیستم طراحی در `09-design-system.md` آمده است. هنوز هیچ کد اپلیکیشنی وجود ندارد و اسکلت در 01b ساخته می‌شود.
+فاز ۱ب. اسکلت monorepo (web، worker، ui، core، db، instagram، config) ساخته شده است. Stack در ADR-001: Next.js، Node.js، PostgreSQL، Prisma، BullMQ و Redis. سیستم طراحی در `09-design-system.md` و طرح دیتابیس در `10-database.md` آمده است. هنوز هیچ قابلیت محصولی (ورود، اینستاگرام، پرداخت) پیاده نشده است.
 
 ## 8. فهرست اسناد
 
@@ -84,3 +84,4 @@
 - [اصول UI/UX](07-ui-ux-principles.md)
 - [واژه‌نامه](08-glossary.md)
 - [سیستم طراحی](09-design-system.md)
+- [دیتابیس](10-database.md)

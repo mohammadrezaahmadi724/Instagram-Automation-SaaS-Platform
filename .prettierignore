@@ -1,0 +1,11 @@
+node_modules
+.next
+dist
+.turbo
+coverage
+pnpm-lock.yaml
+test-results
+playwright-report
+apps/web/app/fonts
+docs
+*.md

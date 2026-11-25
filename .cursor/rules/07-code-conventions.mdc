@@ -1,0 +1,13 @@
+---
+description: قراردادهای کد اسکلت دایرکتورا برای اپ‌ها و پکیج‌ها
+globs: apps/**/*.ts, apps/**/*.tsx, packages/**/*.ts, packages/**/*.tsx
+alwaysApply: false
+---
+- TypeScript در حالت strict است. `noUncheckedIndexedAccess` و `exactOptionalPropertyTypes` روشن‌اند. از `any` بی‌دلیل استفاده نکن.
+- Server Components پیش‌فرض‌اند. `'use client'` فقط وقتی لازم است که state، effect، یا رویداد مرورگر در همان فایل باشد.
+- ورودی‌های بیرونی با `zod` اعتبارسنجی شوند.
+- هر query دیتابیس از `packages/db` عبور کند و `workspaceId` را از نشست سرور بگیرد. query در سطح صفحه ساخته نمی‌شود.
+- هیچ secret در کد کلاینت نباشد. متغیرهای `NEXT_PUBLIC_` هرگز secret نیستند.
+- قانون وابستگی ADR-012 رعایت شود: `core` به پکیج داخلی یا فریم‌ورک وابسته نیست. `ui` به `db` و `instagram` وابسته نیست. اپ‌ها می‌توانند از پکیج‌ها استفاده کنند.
+- هر تابع منطق دامنه در `core` تست unit دارد.
+- برای هر تغییر UI، نتیجه‌ی `pnpm check:design` و `pnpm test:e2e` در گزارش تسک بیاید.

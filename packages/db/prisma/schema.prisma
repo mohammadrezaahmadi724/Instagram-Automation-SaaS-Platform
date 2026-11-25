@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  AGENT
+  VIEWER
+
+  @@map("membership_role")
+}
+
+model Workspace {
+  id          String       @id @default(uuid(7)) @db.Uuid
+  name        String
+  slug        String       @unique
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  memberships Membership[]
+
+  @@map("workspaces")
+}
+
+/// phoneE164 is stored because every login method still needs a phone number.
+/// ADR-009 has not chosen the login method.
+model User {
+  id          String       @id @default(uuid(7)) @db.Uuid
+  phoneE164   String       @unique @map("phone_e164")
+  displayName String?      @map("display_name")
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  memberships Membership[]
+
+  @@map("users")
+}
+
+model Membership {
+  id          String         @id @default(uuid(7)) @db.Uuid
+  workspaceId String         @map("workspace_id") @db.Uuid
+  userId      String         @map("user_id") @db.Uuid
+  role        MembershipRole
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id])
+  user        User           @relation(fields: [userId], references: [id])
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId])
+  @@map("memberships")
+}

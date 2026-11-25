@@ -51,6 +51,7 @@ desktop.ini
 *.sqlite3
 *.db
 
+# Fonts under apps/web/app/fonts are source and must stay tracked.
 # Next.js / TypeScript / tooling (ADR-001, ADR-012)
 next-env.d.ts
 *.tsbuildinfo
@@ -61,3 +62,4 @@ playwright-report/
 test-results/
 blob-report/
 .prisma/
+packages/db/src/generated/
