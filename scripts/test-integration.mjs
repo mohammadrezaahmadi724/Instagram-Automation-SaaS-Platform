@@ -15,12 +15,15 @@ process.env.RUN_INTEGRATION = '1';
 
 function run(args) {
   return new Promise((resolve, reject) => {
-    const command = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
-    const child = spawn(command, args, {
-      cwd: root,
-      stdio: 'inherit',
-      env: process.env,
-    });
+    const command =
+      process.platform === 'win32'
+        ? `pnpm ${args.map((arg) => (/\s/.test(arg) ? `"${arg}"` : arg)).join(' ')}`
+        : 'pnpm';
+    const child =
+      process.platform === 'win32'
+        ? spawn(command, { cwd: root, stdio: 'inherit', env: process.env, shell: true })
+        : spawn(command, args, { cwd: root, stdio: 'inherit', env: process.env });
+    child.on('error', reject);
     child.on('exit', (code) => {
       if (code === 0) resolve();
       else reject(new Error(`pnpm ${args.join(' ')} exited ${code ?? 'null'}`));

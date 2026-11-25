@@ -12,7 +12,7 @@
 
 - پورت‌های Postgres و Redis دایرکتورا روی `55432` و `56379` قابل تنظیم شدند تا با سرویس‌های دیگر ماشین تداخل نکنند.
 - بارگذاری `.env` ریشه با `process.loadEnvFile` جایگزین پارسر دست‌ساز شد. CSP گزارش‌فقط کامل‌تر شد و `/api/health?deep=1` وضعیت db و redis را جدا برمی‌گرداند.
-- کلاس‌های `packages/ui` با `@source` وارد Tailwind شدند. تست integration فقط با `RUN_INTEGRATION=1` اجرا می‌شود و در غیر این صورت با پیام صریح skip می‌شود.
+- کلاس‌های `packages/ui` با `@source` وارد Tailwind شدند. تست integration فقط با `RUN_INTEGRATION=1` اجرا می‌شود و در غیر این صورت با پیام صریح skip می‌شود. روی ویندوز، runner دستور را یک‌رشته‌ای با shell اجرا می‌کند تا `spawn` روی `pnpm.cmd` با `EINVAL` شکست نخورد.
 
 ## [0.2.0-phase1b] - 1405/09/04
 
