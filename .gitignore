@@ -1,0 +1,52 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+credentials*.json
+service-account*.json
+
+# Dependencies (any stack)
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pnpm-store/
+
+# Build & output
+dist/
+build/
+out/
+.next/
+.nuxt/
+coverage/
+*.log
+logs/
+tmp/
+temp/
+
+# Uploads / runtime storage
+uploads/
+storage/*
+!storage/.gitkeep
+
+# OS / editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# Databases (local)
+*.sqlite
+*.sqlite3
+*.db

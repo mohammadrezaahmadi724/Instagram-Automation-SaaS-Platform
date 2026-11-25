@@ -1,0 +1,15 @@
+---
+description: الزامات امنیتی
+globs:
+alwaysApply: true
+---
+- Secretها فقط در env یا secret manager باشند. .env هرگز commit نشود. .env.example فقط placeholder دارد.
+- توکن‌های Meta در حالت ذخیره رمزنگاری شوند (مثلاً AES-256-GCM با کلید خارج از DB) و هرگز در لاگ، خطا یا پاسخ API ظاهر نشوند.
+- امضای webhook (X-Hub-Signature-256، HMAC-SHA256 روی body خام، مقایسه‌ی constant-time) قبل از هر پردازش بررسی شود.
+- رویدادهای webhook idempotent پردازش شوند.
+- جداسازی tenant در لایه‌ی داده و سرویس اجباری است. هر کوئری با workspace_id فیلتر شود و تست نشت بین tenantها وجود داشته باشد.
+- کنترل دسترسی (RBAC) سمت سرور روی هر endpoint انجام شود.
+- عملیات حساس در Audit Log ثبت شوند.
+- Data Deletion و Deauthorize callback از روز اول جزو محدوده هستند.
+- ورودی‌ها اعتبارسنجی شوند و در برابر XSS، SQLi، CSRF و SSRF محافظت وجود داشته باشد. OTP و ورود rate limit داشته باشند.
+- جزئیات کامل در docs/06-security-requirements.md است.
