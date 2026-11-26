@@ -10,6 +10,7 @@ export default defineConfig({
   expect: {
     toHaveScreenshot: { maxDiffPixelRatio: 0.01 },
   },
+  updateSnapshots: process.env.UPDATE_SNAPSHOTS === '1' ? 'all' : 'none',
   webServer: {
     command: 'pnpm exec next build && pnpm exec next start --port 3000',
     url: 'http://127.0.0.1:3000/api/health',

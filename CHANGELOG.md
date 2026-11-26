@@ -6,6 +6,13 @@
 
 قالب این فایل Keep a Changelog است.
 
+## [0.4.0-phase2a] - 1405/09/06
+
+### Changed
+
+- تست بصری Playwright فقط با baseline لینوکس یا `UPDATE_SNAPSHOTS=1` روی لینوکس اجرا می‌شود.
+- ADR-009 و ADR-011 Accepted شدند. مبلغ به‌صورت ریال صحیح Accepted شد.
+
 ## [0.3.0-phase1c] - 1405/09/04
 
 ### Added

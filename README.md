@@ -117,7 +117,7 @@ Postgres و Redis دایرکتورا فقط روی loopback منتشر می‌ش
 
 `/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. خانه‌ی سایت یک معرفی کوتاه است و به همین کاتالوگ لینک می‌دهد.
 
-مقایسه‌ی بصری Playwright فقط روی CI لینوکس اجرا می‌شود و baseline همان‌جا معتبر است. ویندوز محلی اسکرین‌شات کامل صفحه را در `apps/web/test-results/screenshots/` می‌سازد و `toHaveScreenshot` را اجرا نمی‌کند.
+`toHaveScreenshot` فقط روی لینوکس اجرا می‌شود، و فقط وقتی `UPDATE_SNAPSHOTS=1` باشد یا فایل‌های `*-chromium-linux.png` در `apps/web/e2e/smoke.spec.ts-snapshots/` وجود داشته باشند. اگر baseline نباشد آن assertionها skip می‌شوند و job e2e سبز می‌ماند. تست‌های کارکردی و axe همیشه اجرا می‌شوند. برای ساخت baseline، روی لینوکس `UPDATE_SNAPSHOTS=1 pnpm test:e2e` را بزنید و فقط PNGهای لینوکس را commit کنید. از artifact همان job در CI هم می‌شود همان فایل‌ها را برداشت. اسکرین‌شات کامل صفحه در `apps/web/test-results/screenshots/` است و commit نمی‌شود. baseline ویندوز ساخته یا commit نمی‌شود.
 
 `apps/web/AGENTS.md` را Next 16 هنگام dev می‌سازد و اگر حذف شود دوباره نوشته می‌شود.
 

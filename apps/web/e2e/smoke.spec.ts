@@ -1,5 +1,17 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+
+const linuxBaseline = path.join(
+  process.cwd(),
+  'e2e',
+  'smoke.spec.ts-snapshots',
+  'sidebar-open-chromium-linux.png',
+);
+const runVisualSnapshots =
+  process.platform === 'linux' &&
+  (process.env.UPDATE_SNAPSHOTS === '1' || existsSync(linuxBaseline));
 
 async function expectNoSeriousAxe(page: Page) {
   const results = await new AxeBuilder({ page }).analyze();
@@ -103,8 +115,8 @@ test('home, catalog and shell', async ({ page }) => {
 
 test('visual baselines on linux CI', async ({ page }) => {
   test.skip(
-    process.platform !== 'linux' || !process.env.CI,
-    'visual baselines are compared only on Linux CI',
+    !runVisualSnapshots,
+    'linux visual baselines are not in the repo; on Linux set UPDATE_SNAPSHOTS=1 to create them',
   );
   await page.goto('/overview');
   await page.evaluate(async () => {
