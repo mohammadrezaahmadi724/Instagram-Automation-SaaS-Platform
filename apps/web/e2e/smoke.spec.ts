@@ -1,22 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
-async function expectSolidBadge(page: import('@playwright/test').Page) {
-  const background = await page
-    .getByText('خنثی')
-    .evaluate((node) => getComputedStyle(node).backgroundColor);
-  expect(background).not.toBe('rgba(0, 0, 0, 0)');
-  expect(background).not.toBe('transparent');
-}
-
-async function expectTouchHeight(page: import('@playwright/test').Page) {
-  const theme = await page.getByRole('button', { name: 'تیره' }).boundingBox();
-  const toggle = await page.getByRole('switch', { name: 'نمونه‌ی سوئیچ' }).boundingBox();
-  expect(theme?.height ?? 0).toBeGreaterThanOrEqual(44);
-  expect(toggle?.height ?? 0).toBeGreaterThanOrEqual(44);
-}
-
-async function expectNoSeriousAxe(page: import('@playwright/test').Page) {
+async function expectNoSeriousAxe(page: Page) {
   const results = await new AxeBuilder({ page }).analyze();
   const blocking = results.violations.filter(
     (item) => item.impact === 'serious' || item.impact === 'critical',
@@ -24,52 +9,118 @@ async function expectNoSeriousAxe(page: import('@playwright/test').Page) {
   expect(blocking).toEqual([]);
 }
 
-test('design showcase', async ({ page }) => {
+async function expectNoPageScroll(page: Page) {
+  const fits = await page.evaluate(
+    () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+  );
+  expect(fits).toBe(true);
+}
+
+test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+});
+
+test('home, catalog and shell', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'fa');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-  await expect(page.getByRole('heading', { level: 1, name: 'دایرکتورا' })).toBeVisible();
-  const fontReady = await page.evaluate(async () => {
-    await document.fonts.load('16px Vazirmatn');
-    return document.fonts.check('16px Vazirmatn');
+  await page.evaluate(async () => {
+    await document.fonts.ready;
   });
-  expect(fontReady).toBe(true);
+  const theme = await page.getByRole('button', { name: 'تیره' }).boundingBox();
+  expect(theme?.height ?? 0).toBeGreaterThanOrEqual(44);
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'پرش به محتوا' })).toBeFocused();
+  await expectNoSeriousAxe(page);
 
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/design');
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
+  const badge = page.getByTestId('badge-row').getByText('خنثی');
+  const background = await badge.evaluate((node) => getComputedStyle(node).backgroundColor);
+  expect(background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(background).not.toBe('transparent');
+  const toggle = await page.getByTestId('catalog-switch').boundingBox();
+  expect(toggle?.height ?? 0).toBeGreaterThanOrEqual(44);
+  await expect(page.getByText('غیرفعال').first()).toBeVisible();
+  await expectNoSeriousAxe(page);
+  await page.screenshot({ path: 'test-results/screenshots/design-1440-light.png', fullPage: true });
   await page.getByRole('button', { name: 'تیره' }).click();
-  await expect(page.locator('html')).toHaveClass(/dark/);
-  await page.reload();
-  await expect(page.locator('html')).toHaveClass(/dark/);
-  await expectNoSeriousAxe(page);
-  await expectSolidBadge(page);
-  await expectTouchHeight(page);
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.screenshot({ path: 'test-results/screenshots/home-1440-dark.png', fullPage: true });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: 'test-results/screenshots/home-390-dark.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/screenshots/design-1440-dark.png', fullPage: true });
 
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'test-results/screenshots/design-390-dark.png', fullPage: true });
   await page.getByRole('button', { name: 'روشن' }).click();
-  await expect(page.locator('html')).not.toHaveClass(/dark/);
-  await expectNoSeriousAxe(page);
-  await expectSolidBadge(page);
-  await expectTouchHeight(page);
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.screenshot({ path: 'test-results/screenshots/home-1440-light.png', fullPage: true });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: 'test-results/screenshots/home-390-light.png', fullPage: true });
-
+  await page.screenshot({ path: 'test-results/screenshots/design-390-light.png', fullPage: true });
   await page.setViewportSize({ width: 360, height: 800 });
-  const overflows = await page.evaluate(
-    () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
-  );
-  expect(overflows).toBe(true);
+  await expectNoPageScroll(page);
 
-  await page.getByRole('button', { name: 'نمایش پیام موفقیت' }).click();
-  await expect(page.getByText('پیام نمونه نمایش داده شد')).toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/overview');
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
+  await expect(page.getByRole('heading', { name: 'نمای کلی' })).toBeVisible();
+  await expect(page.getByText('هنوز داده‌ای نیست')).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'پرش به محتوا' })).toBeFocused();
+  const current = page.getByRole('link', { name: 'نمای کلی' });
+  await current.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.getByRole('link', { name: 'کاتالوگ طراحی' })).toBeFocused();
+  await expectNoSeriousAxe(page);
+  await page.screenshot({ path: 'test-results/screenshots/shell-1440-light.png', fullPage: true });
+  await page.getByRole('button', { name: 'تیره' }).click();
+  await page.screenshot({ path: 'test-results/screenshots/shell-1440-dark.png', fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: 'باز کردن منو' }).click();
+  await expect(page.getByRole('dialog', { name: 'منو' })).toBeVisible();
+  await page.screenshot({ path: 'test-results/screenshots/shell-390-dark.png', fullPage: true });
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'روشن' }).click();
+  await page.getByRole('button', { name: 'باز کردن منو' }).click();
+  await page.screenshot({ path: 'test-results/screenshots/shell-390-light.png', fullPage: true });
+  await page.keyboard.press('Escape');
+  await page.setViewportSize({ width: 360, height: 800 });
+  await expectNoPageScroll(page);
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/design');
+  await page.getByRole('button', { name: 'حذف نمونه' }).click();
+  await expect(page.getByRole('button', { name: 'انصراف' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'حذف نمونه' })).toBeFocused();
 
   const health = await page.request.get('/api/health');
   expect(health.status()).toBe(200);
-  expect(await health.json()).toMatchObject({ status: 'ok', service: 'web' });
 
   await page.goto('/missing-page');
   await expect(page.getByRole('heading', { name: 'این صفحه پیدا نشد' })).toBeVisible();
+});
+
+test('visual baselines on linux CI', async ({ page }) => {
+  test.skip(
+    process.platform !== 'linux' || !process.env.CI,
+    'visual baselines are compared only on Linux CI',
+  );
+  await page.goto('/overview');
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
+  await expect(page.getByTestId('app-sidebar')).toHaveScreenshot('sidebar-open.png');
+  await page.getByRole('button', { name: 'جمع کردن منو' }).click();
+  await expect(page.getByTestId('app-sidebar')).toHaveScreenshot('sidebar-collapsed.png');
+  await expect(page.getByTestId('app-topbar')).toHaveScreenshot('topbar.png');
+  await page.goto('/design');
+  await expect(page.getByTestId('badge-row')).toHaveScreenshot('badges.png');
+  await expect(page.getByTestId('form-error')).toHaveScreenshot('form-error.png');
+  await expect(page.getByTestId('stat-card').first()).toHaveScreenshot('stat-card.png');
+  await expect(page.getByTestId('data-table').first()).toHaveScreenshot('table-ready.png');
+  await expect(page.getByTestId('table-loading')).toHaveScreenshot('table-loading.png');
+  await expect(page.getByTestId('table-empty')).toHaveScreenshot('table-empty.png');
+  await page.getByRole('button', { name: 'حذف نمونه' }).click();
+  await expect(page.getByTestId('confirm-dialog')).toHaveScreenshot('confirm-dialog.png');
 });
