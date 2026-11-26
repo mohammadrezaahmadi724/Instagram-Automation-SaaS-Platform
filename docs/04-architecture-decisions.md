@@ -734,6 +734,7 @@ docs/  .cursor/
 | `@vitejs/plugin-react` | `6.3.0` | |
 | `jsdom` | `31.0.1` | |
 | `@testing-library/react` | `16.3.3` | |
+| `@testing-library/user-event` | `14.6.1` | شبیه‌سازی Space روی Checkbox در Vitest. انتشار این نسخه قدیمی‌تر از آستانه است؛ `14.6.13` نصب نشد تا pin عوض نشود. |
 | `@playwright/test` | `1.65.1` | |
 | `@axe-core/playwright` | `4.14.1` | |
 | `eslint` | `9.39.5` | نه 10.x. سازگاری pluginهای `eslint-config-next` با 10 تأییدنشده است. |
@@ -741,6 +742,12 @@ docs/  .cursor/
 | `prettier` | `3.10.1` | |
 | `vazirmatn` | `33.0.3` | فقط منبع فایل فونت. |
 | `server-only` | `0.0.1` | مرز import سمت سرور در `apps/web`. نسخه‌ی منتشرشده همین است. |
+| `@tanstack/react-table` | `9.3.1` | جدول.headless. انتشار 2026-10-12. بدون `minimumReleaseAgeExclude` نصب شد. API پایدار از export مسیر `legacy` استفاده می‌شود. |
+| `cmdk` | `1.1.1` | جستجوی Combobox. انتشار 2025-03-14. `vaul` اضافه نشد چون Sheet با Dialog خود `radix-ui` ساخته شد. |
+| `actions/checkout` | `v7.0.1` SHA `3d3c42e5aac5ba805825da76410c181273ba90b1` | CI |
+| `pnpm/action-setup` | `v6.1.1` SHA `73e46992e05b19abd31f2f3c20e0e7370d762115` | CI، pnpm `12.23.0` |
+| `actions/setup-node` | `v7.1.0` SHA `949feb2413d6458794dcd2491c4babbbce0c15c1` | CI، Node از `.nvmrc` |
+| `actions/upload-artifact` | `v7.0.2` SHA `cf430e030ddbb5b0abf93d22962f4752f3646cd9` | آپلود گزارش Playwright فقط هنگام شکست |
 
 ### زنجیره‌ی تأمین pnpm
 

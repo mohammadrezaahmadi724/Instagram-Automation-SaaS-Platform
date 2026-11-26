@@ -42,6 +42,8 @@ export function Button({
   ref,
   ...props
 }: ButtonProps) {
+  const accessibleName =
+    props['aria-label'] ?? (loading && typeof children === 'string' ? children : undefined);
   return (
     <button
       ref={ref}
@@ -49,6 +51,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...props}
+      aria-label={accessibleName}
     >
       <span className="inline-grid place-items-center">
         <span

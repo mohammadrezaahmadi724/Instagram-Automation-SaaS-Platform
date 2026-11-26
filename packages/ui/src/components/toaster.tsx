@@ -9,9 +9,16 @@ export function Toaster() {
     <Sonner
       theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
       dir="rtl"
+      position="bottom-center"
       richColors={false}
       toastOptions={{
-        className: 'bg-surface text-foreground border border-border',
+        classNames: {
+          toast: 'bg-surface text-foreground border border-border',
+          success: 'border-success',
+          error: 'border-danger',
+          warning: 'border-warning',
+          info: 'border-info',
+        },
       }}
     />
   );

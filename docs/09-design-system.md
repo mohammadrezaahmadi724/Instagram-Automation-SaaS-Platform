@@ -747,7 +747,7 @@ WCAG 2.2 AA حداقل است.
 ## 16. منابع و مجوزها
 
 - `Vazirmatn`: SIL Open Font License 1.1. self-host.
-- `JetBrains Mono`: SIL Open Font License 1.1. self-host.
+- `JetBrains Mono` v2.304: SIL Open Font License 1.1. فایل متغیر از ریلیز رسمی به woff2 تبدیل و در `apps/web/app/fonts/JetBrainsMono[wght].woff2` خودمیزبان شده است. متن مجوز: `apps/web/app/fonts/OFL-JetBrainsMono.txt`.
 - `Lucide`: مجوز ISC.
 
-فایل مجوز فونت‌ها در 01b کنار فایل فونت قرار می‌گیرد. این فاز فونت را دانلود یا به مخزن اضافه نمی‌کند.
+`Vazirmatn` و `JetBrains Mono` از CDN نمی‌آیند. `@font-face` جدا برای JetBrains Mono ساخته نشده؛ فقط `next/font/local` متغیر `--dr-font-mono` را تنظیم می‌کند.

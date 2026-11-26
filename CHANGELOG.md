@@ -6,6 +6,14 @@
 
 قالب این فایل Keep a Changelog است.
 
+## [0.3.0-phase1c] - 1405/09/04
+
+### Added
+
+- پوسته‌ی راست‌چین با sidebar، topbar، breadcrumb و page header.
+- کامپوننت‌های باقی‌مانده‌ی سیستم طراحی، فونت JetBrains Mono و کاتالوگ `/design`.
+- workflow گیت‌هاب برای verify، integration و e2e.
+
 ## [0.2.1-phase1b-fix] - 1405/09/04
 
 ### Fixed

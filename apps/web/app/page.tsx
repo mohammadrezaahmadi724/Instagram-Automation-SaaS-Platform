@@ -2,9 +2,8 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import Image from 'next/image';
 import { connection } from 'next/server';
-import { formatJalali, formatRelativeTime, formatToman, jalaliYear } from '@directora/core';
+import { jalaliYear } from '@directora/core';
 import { Badge, ThemeToggle } from '@directora/ui';
-import { DesignLab } from './design-lab';
 
 function BrandMark() {
   const logo = path.join(process.cwd(), 'public', 'brand', 'directora-logo.png');
@@ -32,22 +31,9 @@ function BrandMark() {
   );
 }
 
-const typeScale = [
-  ['display', 'text-5xl font-extrabold', 'دایرکتورا'],
-  ['text-4xl', 'text-4xl font-extrabold', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-3xl', 'text-3xl font-bold', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-2xl', 'text-2xl font-bold', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-xl', 'text-xl font-semibold', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-lg', 'text-lg font-medium', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-base', 'text-base', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-sm', 'text-sm', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-  ['text-xs', 'text-xs', 'پاسخ سریع به دایرکت، فروش بیشتر'],
-] as const;
-
 export default async function HomePage() {
   await connection();
   const now = new Date();
-  const earlier = new Date(now.getTime() - 3 * 60 * 1000);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <a
@@ -74,41 +60,33 @@ export default async function HomePage() {
             }}
           />
           <div className="relative flex flex-col gap-4 px-6 py-12 md:px-10">
-            <Badge>نسخه‌ی پیش از انتشار · فاز ۱ب</Badge>
+            <Badge className="self-start">نسخه‌ی پیش از انتشار · فاز ۱ج</Badge>
             <h1 className="text-5xl font-extrabold tracking-normal text-foreground md:text-6xl">
               دایرکتورا
             </h1>
             <p className="max-w-2xl text-lg text-subtle">
               اتوماسیون رسمی و امن اینستاگرام برای کسب‌وکارهای ایرانی — در حال ساخت
             </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/design"
+                className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-primary-foreground"
+              >
+                کاتالوگ طراحی
+              </a>
+              <a
+                href="/overview"
+                className="inline-flex min-h-11 items-center rounded-md border border-input px-4"
+              >
+                نمای کلی
+              </a>
+            </div>
           </div>
-        </section>
-        <DesignLab />
-        <section className="flex flex-col gap-4">
-          <h2 className="text-2xl font-bold">تایپوگرافی</h2>
-          {typeScale.map(([token, className, sentence]) => (
-            <p key={token} className={`flex items-baseline gap-3 ${className}`}>
-              <span className="font-mono text-xs text-muted">{token}</span>
-              <span>{sentence}</span>
-            </p>
-          ))}
-        </section>
-        <section className="flex flex-col gap-3">
-          <h2 className="text-2xl font-bold">فارسی و راست‌به‌چپ</h2>
-          <p>{formatToman(12500000)}</p>
-          <p>امروز {formatJalali(now)}</p>
-          <p>{formatRelativeTime(earlier, now)}</p>
-          <p>
-            پیام <bdi>Directora</bdi> در کنار متن فارسی
-          </p>
-          <p>
-            شماره نمونه: <bdi dir="ltr">+98 21 000 0000</bdi>
-          </p>
         </section>
       </main>
       <footer className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-8 text-sm text-muted">
         <p>© {jalaliYear(now)} دایرکتورا</p>
-        <p>فونت Vazirmatn تحت مجوز OFL</p>
+        <p>فونت‌های Vazirmatn و JetBrains Mono تحت مجوز OFL</p>
       </footer>
     </div>
   );

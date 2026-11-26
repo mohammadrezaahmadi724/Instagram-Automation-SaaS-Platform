@@ -11,6 +11,13 @@ const vazirmatn = localFont({
   weight: '100 900',
 });
 
+const jetbrains = localFont({
+  src: './fonts/JetBrainsMono[wght].woff2',
+  variable: '--dr-font-mono',
+  display: 'swap',
+  weight: '100 800',
+});
+
 export const metadata: Metadata = {
   title: 'دایرکتورا',
   description: 'اتوماسیون رسمی و امن اینستاگرام برای کسب‌وکارهای ایرانی',
@@ -18,7 +25,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fa" dir="rtl" className={vazirmatn.variable} suppressHydrationWarning>
+    <html
+      lang="fa"
+      dir="rtl"
+      className={`${vazirmatn.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <AppThemeProvider>
           {children}

@@ -1,5 +1,6 @@
 import type { ComponentProps, InputHTMLAttributes, ReactNode, Ref } from 'react';
 import { Label as RadixLabel } from 'radix-ui';
+import { fieldClass, fieldSizeClass } from '../lib/controls';
 import { cn } from '../lib/cn';
 
 export function Label({ className, ...props }: ComponentProps<typeof RadixLabel.Root>) {
@@ -27,17 +28,15 @@ export function FieldError({ id, children }: { id: string; children: ReactNode }
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   ref?: Ref<HTMLInputElement>;
   invalid?: boolean;
+  fieldSize?: keyof typeof fieldSizeClass;
 }
 
-export function Input({ className, invalid = false, ref, ...props }: InputProps) {
+export function Input({ className, invalid = false, fieldSize = 'md', ref, ...props }: InputProps) {
   return (
     <input
       ref={ref}
       aria-invalid={invalid || undefined}
-      className={cn(
-        'min-h-11 w-full rounded-md border border-input bg-surface px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50',
-        className,
-      )}
+      className={cn(fieldClass, fieldSizeClass[fieldSize], className)}
       {...props}
     />
   );

@@ -1,6 +1,6 @@
 # دایرکتورا (Directora)
 
-وضعیت سند: پیش‌نویس فاز ۱ب
+وضعیت سند: پیش‌نویس فاز ۱ج
 
 تاریخ: 1405/09/04
 
@@ -10,9 +10,9 @@
 
 ## Status
 
-`Phase 1B — Runnable monorepo scaffold, awaiting supervisor review`
+`Phase 1C — App shell, design catalog, and CI, awaiting supervisor review`
 
-اسکلت monorepo، توکن‌های برند، و schema اولیه ساخته شده‌اند. قابلیت محصول هنوز وجود ندارد. فاز ۱ب تا تأیید ناظر `در حال انجام` است.
+فاز ۱ب در ۱۴۰۵/۰۹/۰۴ انجام شده است. فاز ۱ج پوسته‌ی راست‌چین، کامپوننت‌های طراحی و کاتالوگ `/design` را می‌سازد. قابلیت محصول هنوز وجود ندارد.
 
 ## Tech stack (accepted)
 
@@ -112,6 +112,12 @@ pnpm test:integration
 ## پورت‌ها
 
 Postgres و Redis دایرکتورا فقط روی loopback منتشر می‌شوند: `127.0.0.1:55432` و `127.0.0.1:56379`. متغیرهای `DIRECTORA_PG_PORT` و `DIRECTORA_REDIS_PORT` همین مقدارها را عوض می‌کنند. `DATABASE_URL` و `REDIS_URL` باید همان پورت را داشته باشند. پورت‌های 5432 و 6379 مال سرویس‌های دیگر همین ماشین‌اند و استفاده نمی‌شوند.
+
+## کاتالوگ طراحی
+
+`/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. خانه‌ی سایت یک معرفی کوتاه است و به همین کاتالوگ لینک می‌دهد.
+
+مقایسه‌ی بصری Playwright فقط روی CI لینوکس اجرا می‌شود و baseline همان‌جا معتبر است. ویندوز محلی اسکرین‌شات کامل صفحه را در `apps/web/test-results/screenshots/` می‌سازد و `toHaveScreenshot` را اجرا نمی‌کند.
 
 `apps/web/AGENTS.md` را Next 16 هنگام dev می‌سازد و اگر حذف شود دوباره نوشته می‌شود.
 
