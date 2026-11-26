@@ -24,20 +24,24 @@ async function withTimeout<T>(work: Promise<T>, ms: number): Promise<T> {
   }
 }
 
-function probeRedis(url: string) {
+function probeRedis(url: string, timeoutMs = 2000) {
   const parsed = new URL(url);
   const port = Number(parsed.port || '6379');
   return new Promise<void>((resolve, reject) => {
     const socket = net.connect({ host: parsed.hostname, port });
-    const fail = (error: Error) => {
+    let settled = false;
+    function finish(error?: Error) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
       socket.destroy();
-      reject(error);
-    };
-    socket.on('error', fail);
+      if (error) reject(error);
+      else resolve();
+    }
+    const timer = setTimeout(() => finish(new Error('timeout')), timeoutMs);
+    socket.on('error', finish);
     socket.on('data', (chunk) => {
-      socket.end();
-      if (chunk.toString().includes('PONG')) resolve();
-      else reject(new Error('unexpected'));
+      finish(chunk.toString().includes('PONG') ? undefined : new Error('unexpected'));
     });
     socket.on('connect', () => {
       socket.write('*1\r\n$4\r\nPING\r\n');
@@ -59,7 +63,7 @@ async function checkDb(env: WebEnv): Promise<Dependency> {
 async function checkRedis(env: WebEnv): Promise<Dependency> {
   if (!env.REDIS_URL) return 'skipped';
   try {
-    await withTimeout(probeRedis(env.REDIS_URL), 2000);
+    await probeRedis(env.REDIS_URL);
     return 'ok';
   } catch {
     return 'error';

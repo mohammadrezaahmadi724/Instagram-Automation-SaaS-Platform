@@ -1,4 +1,6 @@
 import { spawn } from 'node:child_process';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -7,8 +9,10 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 try {
   process.loadEnvFile(path.join(root, '.env'));
 } catch {
-  console.error('test:integration: .env could not be loaded');
-  process.exit(1);
+  if (!process.env.DATABASE_URL || !process.env.REDIS_URL) {
+    console.error('test:integration: DATABASE_URL and REDIS_URL are required');
+    process.exit(1);
+  }
 }
 
 process.env.RUN_INTEGRATION = '1';
@@ -31,5 +35,31 @@ function run(args) {
   });
 }
 
-await run(['--filter', '@directora/db', 'exec', 'vitest', 'run', 'test/integration.test.ts']);
-await run(['--filter', '@directora/worker', 'exec', 'vitest', 'run', 'test/ping.test.ts']);
+await runVitest('@directora/db', 'test/integration.test.ts');
+await runVitest('@directora/worker', 'test/ping.test.ts');
+
+async function runVitest(filter, file) {
+  const dir = mkdtempSync(path.join(tmpdir(), 'directora-vitest-'));
+  const output = path.join(dir, 'report.json');
+  try {
+    await run([
+      '--filter',
+      filter,
+      'exec',
+      'vitest',
+      'run',
+      file,
+      '--reporter=default',
+      '--reporter=json',
+      `--outputFile.json=${output}`,
+    ]);
+    const report = JSON.parse(readFileSync(output, 'utf8'));
+    const skipped = Number(report.numPendingTests ?? 0) + Number(report.numTodoTests ?? 0);
+    if (skipped > 0) {
+      console.error(`test:integration: ${filter} skipped ${skipped}`);
+      process.exit(1);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
