@@ -12,6 +12,7 @@
 
 - تست بصری Playwright فقط با baseline لینوکس یا `UPDATE_SNAPSHOTS=1` روی لینوکس اجرا می‌شود.
 - ADR-009 و ADR-011 Accepted شدند. مبلغ به‌صورت ریال صحیح Accepted شد.
+- اسکیمای MVP، seed چهار پلن، و هلپر AES-256-GCM اضافه شد.
 
 ## [0.3.0-phase1c] - 1405/09/04
 

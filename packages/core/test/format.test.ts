@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   contrastRatio,
   formatJalali,
+  formatRialAsToman,
   formatToman,
   normalizeDigits,
   toPersianDigits,
@@ -45,6 +46,16 @@ describe('formatToman', () => {
 
   it('rejects a negative amount', () => {
     expect(() => formatToman(-1)).toThrow(/negative/);
+  });
+});
+
+describe('formatRialAsToman', () => {
+  it('divides a multiple of ten by ten', () => {
+    expect(formatRialAsToman(4_900_000n)).toBe('۴۹۰٬۰۰۰ تومان');
+  });
+
+  it('rejects a rial amount that is not a whole toman', () => {
+    expect(() => formatRialAsToman(15)).toThrow(/divisible by 10/);
   });
 });
 
