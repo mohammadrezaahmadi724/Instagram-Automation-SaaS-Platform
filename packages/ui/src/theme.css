@@ -52,6 +52,7 @@
   --font-mono: var(--dr-font-mono);
   --duration-fast: var(--motion-fast);
   --ease-standard: var(--dr-ease-standard);
+  --spacing-shell: 4.75rem;
 }
 
 @utility opacity-halo {
