@@ -21,8 +21,8 @@ describe('aes-256-gcm', () => {
     const encrypted = encryptSecret('token-sample', key, 'v1');
     const bytes = Buffer.from(encrypted.ciphertext, 'base64url');
     bytes[14] = bytes[14] === 0 ? 1 : 0;
-    expect(() => decryptSecret({ keyId: 'v1', ciphertext: bytes.toString('base64url') }, key)).toThrow(
-      'decryption failed',
-    );
+    expect(() =>
+      decryptSecret({ keyId: 'v1', ciphertext: bytes.toString('base64url') }, key),
+    ).toThrow('decryption failed');
   });
 });

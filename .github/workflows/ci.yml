@@ -89,6 +89,37 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DESIGN_CATALOG: '1'
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      REDIS_URL: redis://localhost:6379
+      AUTH_SECRET: ci-auth-secret-value
+      ENCRYPTION_KEY: 1111111111111111111111111111111111111111111111111111111111111111
+      ENCRYPTION_KEY_ID: v1
+      SMS_PROVIDER: console
+      OTP_TEST_HELPER: '1'
+      SESSION_TTL_DAYS: '30'
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      redis:
+        image: redis:7.4-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     steps:
       - name: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -106,6 +137,10 @@ jobs:
       - name: playwright
         run: pnpm exec playwright install --with-deps chromium
         working-directory: apps/web
+      - name: migrate
+        run: pnpm --filter @directora/db exec prisma migrate deploy
+      - name: seed
+        run: pnpm --filter @directora/db db:seed
       - name: e2e
         run: pnpm test:e2e
       - name: upload playwright artifacts

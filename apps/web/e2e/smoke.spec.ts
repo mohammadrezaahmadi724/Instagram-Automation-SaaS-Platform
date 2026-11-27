@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { loginWithOtp } from './login';
 
 const linuxBaseline = path.join(
   process.cwd(),
@@ -70,18 +71,20 @@ test('home, catalog and shell', async ({ page }) => {
   await expectNoPageScroll(page);
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/overview');
+  await loginWithOtp(page);
   await page.evaluate(async () => {
     await document.fonts.ready;
   });
-  await expect(page.getByRole('heading', { name: 'نمای کلی' })).toBeVisible();
-  await expect(page.getByText('هنوز داده‌ای نیست')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'فضای کاری من' })).toBeVisible();
+  await expect(page.getByText('اتصال رسمی Meta API در مرحلهٔ بعد فعال می‌شود.')).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'پرش به محتوا' })).toBeFocused();
-  const current = page.getByRole('link', { name: 'نمای کلی' });
+  const current = page.getByTestId('app-sidebar').getByRole('link', { name: 'داشبورد' });
   await current.focus();
   await page.keyboard.press('ArrowDown');
-  await expect(page.getByRole('link', { name: 'کاتالوگ طراحی' })).toBeFocused();
+  await expect(
+    page.getByTestId('app-sidebar').getByRole('link', { name: 'اینستاگرام' }),
+  ).toBeFocused();
   await expectNoSeriousAxe(page);
   await page.screenshot({ path: 'test-results/screenshots/shell-1440-light.png', fullPage: true });
   await page.getByRole('button', { name: 'تیره' }).click();
@@ -118,7 +121,7 @@ test('visual baselines on linux CI', async ({ page }) => {
     !runVisualSnapshots,
     'linux visual baselines are not in the repo; on Linux set UPDATE_SNAPSHOTS=1 to create them',
   );
-  await page.goto('/overview');
+  await loginWithOtp(page);
   await page.evaluate(async () => {
     await document.fonts.ready;
   });

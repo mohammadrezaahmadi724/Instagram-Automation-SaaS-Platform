@@ -16,6 +16,11 @@ try {
 }
 
 process.env.RUN_INTEGRATION = '1';
+process.env.SMS_PROVIDER = 'console';
+process.env.OTP_TEST_HELPER = '1';
+if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
+  process.env.AUTH_SECRET = 'integration-auth-secret';
+}
 
 function run(args) {
   return new Promise((resolve, reject) => {
@@ -37,6 +42,7 @@ function run(args) {
 
 await runVitest('@directora/db', 'test/integration.test.ts');
 await runVitest('@directora/worker', 'test/ping.test.ts');
+await runVitest('@directora/web', 'test/auth.integration.test.ts');
 
 async function runVitest(filter, file) {
   const dir = mkdtempSync(path.join(tmpdir(), 'directora-vitest-'));
@@ -55,6 +61,10 @@ async function runVitest(filter, file) {
     ]);
     const report = JSON.parse(readFileSync(output, 'utf8'));
     const skipped = Number(report.numPendingTests ?? 0) + Number(report.numTodoTests ?? 0);
+    if (!Number(report.numTotalTests ?? 0)) {
+      console.error(`test:integration: ${filter} ran no tests`);
+      process.exit(1);
+    }
     if (skipped > 0) {
       console.error(`test:integration: ${filter} skipped ${skipped}`);
       process.exit(1);

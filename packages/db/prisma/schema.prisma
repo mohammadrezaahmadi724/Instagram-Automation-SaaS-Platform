@@ -120,7 +120,7 @@ model Workspace {
   @@map("workspaces")
 }
 
-/// Login is phone OTP (ADR-009). There is no password column and no Instagram password (SEC-001).
+/// Login is phone OTP (ADR-009). Instagram credentials are never stored (SEC-001).
 model User {
   id               String           @id @default(uuid(7)) @db.Uuid
   phoneE164        String           @unique @map("phone_e164")
