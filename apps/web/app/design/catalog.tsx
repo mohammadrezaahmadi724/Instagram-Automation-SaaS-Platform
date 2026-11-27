@@ -95,7 +95,7 @@ export function DesignCatalog() {
             {label}
           </a>
         ))}
-        <a href="/overview" className="inline-flex min-h-11 items-center rounded-md px-3 text-link">
+        <a href="/app" className="inline-flex min-h-11 items-center rounded-md px-3 text-link">
           پوسته‌ی برنامه
         </a>
       </nav>

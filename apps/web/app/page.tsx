@@ -60,7 +60,7 @@ export default async function HomePage() {
             }}
           />
           <div className="relative flex flex-col gap-4 px-6 py-12 md:px-10">
-            <Badge className="self-start">نسخه‌ی پیش از انتشار · فاز ۱ج</Badge>
+            <Badge className="self-start">نسخه‌ی پیش از انتشار</Badge>
             <h1 className="text-5xl font-extrabold tracking-normal text-foreground md:text-6xl">
               دایرکتورا
             </h1>
@@ -75,10 +75,10 @@ export default async function HomePage() {
                 کاتالوگ طراحی
               </a>
               <a
-                href="/overview"
-                className="inline-flex min-h-11 items-center rounded-md border border-input px-4"
+                href="/login"
+                className="inline-flex min-h-11 items-center rounded-md bg-accent px-4 text-accent-foreground"
               >
-                نمای کلی
+                ورود به پنل
               </a>
             </div>
           </div>

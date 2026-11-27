@@ -1,8 +1,8 @@
 # دایرکتورا (Directora)
 
-وضعیت سند: پیش‌نویس فاز ۱ج
+وضعیت سند: پیش‌نویس فاز ۲
 
-تاریخ: 1405/09/04
+تاریخ: 1405/09/06
 
 ## Summary
 
@@ -10,9 +10,9 @@
 
 ## Status
 
-`Phase 1C — App shell, design catalog, and CI, awaiting supervisor review`
+`Phase 2 — OTP login, workspace, and authenticated panel, in progress`
 
-فاز ۱ب در ۱۴۰۵/۰۹/۰۴ انجام شده است. فاز ۱ج پوسته‌ی راست‌چین، کامپوننت‌های طراحی و کاتالوگ `/design` را می‌سازد. قابلیت محصول هنوز وجود ندارد.
+فاز ۱ج در ۱۴۰۵/۰۹/۰۶ انجام شده است. فاز ۲ ورود با OTP، فضای کاری و پنل `/app` را می‌سازد. اتصال اینستاگرام هنوز شروع نشده است.
 
 ## Tech stack (accepted)
 
@@ -22,7 +22,7 @@
 - [ADR-012](docs/04-architecture-decisions.md): monorepo با `pnpm` workspaces و `Turborepo`.
 - [ADR-015](docs/04-architecture-decisions.md): `Tailwind CSS` 4، الگوی `shadcn/ui`، و سیستم طراحی.
 
-ADR-001، ADR-002، ADR-003، ADR-012 و ADR-015 بازبینی شده و در نقشه‌ی راه `انجام‌شده` هستند. ADR-014 (نام برند) و ADR-017 (نسخه‌های پین‌شده) هم `Accepted` هستند. ADR-004 تا ADR-011، ADR-013 و ADR-016 (دامنه) هنوز `Proposed`اند.
+ADR-001، ADR-002، ADR-003، ADR-012 و ADR-015 بازبینی شده و در نقشه‌ی راه `انجام‌شده` هستند. ADR-009 (ورود OTP)، ADR-011 (رمزنگاری AES-256-GCM)، ADR-014 و ADR-017 هم `Accepted` هستند. ADR-004 تا ADR-008، ADR-010، ADR-013 و ADR-016 (دامنه) هنوز `Proposed`اند.
 
 ## Key principles
 
@@ -115,7 +115,11 @@ Postgres و Redis دایرکتورا فقط روی loopback منتشر می‌ش
 
 ## کاتالوگ طراحی
 
-`/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. خانه‌ی سایت یک معرفی کوتاه است و به همین کاتالوگ لینک می‌دهد.
+`/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. خانه‌ی سایت یک معرفی کوتاه است و دکمه‌ی «ورود به پنل» به `/login` می‌رود. بعد از ورود، پنل روی `/app` است.
+
+ورود فقط با رمز یک‌بارمصرف موبایل است. متغیرهای نمونه، بدون مقدار واقعی، در `.env.example` هستند: `SMS_PROVIDER=console`، `AUTH_SECRET`، `ENCRYPTION_KEY` (۳۲ بایت hex یا base64)، `ENCRYPTION_KEY_ID=v1` و `SESSION_TTL_DAYS=30`. مقدار واقعی فقط در `.env` می‌ماند و commit نمی‌شود.
+
+`pnpm test:integration` به Postgres روی `127.0.0.1:55432` و Redis روی `127.0.0.1:56379` نیاز دارد. اگر این سرویس‌ها بالا نباشند، دستور شکست می‌خورد و تست را رد نمی‌کند.
 
 `toHaveScreenshot` فقط روی لینوکس اجرا می‌شود، و فقط وقتی `UPDATE_SNAPSHOTS=1` باشد یا فایل‌های `*-chromium-linux.png` در `apps/web/e2e/smoke.spec.ts-snapshots/` وجود داشته باشند. اگر baseline نباشد آن assertionها skip می‌شوند و job e2e سبز می‌ماند. تست‌های کارکردی و axe همیشه اجرا می‌شوند. برای ساخت baseline، روی لینوکس `UPDATE_SNAPSHOTS=1 pnpm test:e2e` را بزنید و فقط PNGهای لینوکس را commit کنید. از artifact همان job در CI هم می‌شود همان فایل‌ها را برداشت. اسکرین‌شات کامل صفحه در `apps/web/test-results/screenshots/` است و commit نمی‌شود. baseline ویندوز ساخته یا commit نمی‌شود.
 

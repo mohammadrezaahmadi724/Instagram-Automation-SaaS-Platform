@@ -1,15 +1,9 @@
 'use client';
 
 import { Menu, PanelRightClose, PanelRightOpen } from 'lucide-react';
-import { useEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 import { Button } from '../button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  SoonMenuItem,
-} from '../dropdown-menu';
 import { Sheet, SheetContent, SheetBody } from '../sheet';
 import { ThemeToggle } from '../theme-toggle';
 import { Tooltip, TooltipProvider } from '../tooltip';
@@ -29,12 +23,16 @@ export function AppShell({
   nav,
   currentPath,
   breadcrumb,
+  workspaceControl,
+  userControl,
   children,
 }: {
   title: string;
   nav: ShellNavItem[];
   currentPath: string;
   breadcrumb?: BreadcrumbItem[];
+  workspaceControl?: ReactNode;
+  userControl?: ReactNode;
   children: ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -112,32 +110,9 @@ export function AppShell({
                 <Menu className="size-5" aria-hidden="true" />
               </Button>
               <p className="min-w-0 flex-1 truncate text-base font-semibold">{title}</p>
-              <Tooltip content="انتخاب Workspace بعد از ورود ممکن می‌شود.">
-                <span
-                  tabIndex={0}
-                  className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <button
-                    type="button"
-                    disabled
-                    className="min-h-11 rounded-md border border-border px-3 text-sm text-muted opacity-50"
-                  >
-                    Workspace · به‌زودی
-                  </button>
-                </span>
-              </Tooltip>
+              {workspaceControl}
               <ThemeToggle />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button type="button" variant="outline" aria-label="منوی کاربر نمونه">
-                    کاربر نمونه
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <SoonMenuItem>تنظیمات</SoonMenuItem>
-                  <SoonMenuItem>خروج</SoonMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {userControl}
             </header>
             {breadcrumb ? (
               <div className="px-4 pt-4">
@@ -226,7 +201,7 @@ function SidebarNav({
                   {link}
                 </Tooltip>
               ) : (
-                link
+                <Fragment key={item.href}>{link}</Fragment>
               );
             })}
         </div>
