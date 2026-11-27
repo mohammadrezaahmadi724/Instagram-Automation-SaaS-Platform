@@ -27,17 +27,36 @@ const labels: Record<string, string> = {
 };
 
 const columns: DataColumn<LogRow>[] = [
-  { accessorKey: 'createdAt', header: 'زمان', cell: ({ row }) => formatJalali(new Date(row.original.createdAt), 'numeric') },
+  {
+    accessorKey: 'createdAt',
+    header: 'زمان',
+    cell: ({ row }) => formatJalali(new Date(row.original.createdAt), 'numeric'),
+  },
   { accessorKey: 'ruleName', header: 'دستور' },
-  { accessorKey: 'triggerType', header: 'تریگر', cell: ({ row }) => labels[row.original.triggerType] ?? row.original.triggerType },
+  {
+    accessorKey: 'triggerType',
+    header: 'تریگر',
+    cell: ({ row }) => labels[row.original.triggerType] ?? row.original.triggerType,
+  },
   { accessorKey: 'matchedKeyword', header: 'کلیدواژه' },
   {
     accessorKey: 'status',
     header: 'وضعیت',
-    cell: ({ row }) => <Badge title={row.original.errorCode}>{labels[row.original.status] ?? row.original.status}</Badge>,
+    cell: ({ row }) => (
+      <Badge title={row.original.errorCode}>
+        {labels[row.original.status] ?? row.original.status}
+      </Badge>
+    ),
   },
 ];
 
 export function LogsTable({ rows }: { rows: LogRow[] }) {
-  return <DataTable caption="گزارش ارسال‌ها" data={rows} columns={columns} status={rows.length === 0 ? 'empty' : 'ready'} />;
+  return (
+    <DataTable
+      caption="گزارش ارسال‌ها"
+      data={rows}
+      columns={columns}
+      status={rows.length === 0 ? 'empty' : 'ready'}
+    />
+  );
 }
