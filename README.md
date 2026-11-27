@@ -1,6 +1,6 @@
 # دایرکتورا (Directora)
 
-وضعیت سند: پیش‌نویس فاز ۲
+وضعیت سند: نسخهٔ قابل‌فروش MVP
 
 تاریخ: 1405/09/06
 
@@ -10,9 +10,9 @@
 
 ## Status
 
-`Phase 2 — OTP login, workspace, and authenticated panel, in progress`
+`0.6.0-mvp — landing, card-to-card billing, super admin, and help center`
 
-فاز ۱ج در ۱۴۰۵/۰۹/۰۶ انجام شده است. فاز ۲ ورود با OTP، فضای کاری و پنل `/app` را می‌سازد. اتصال اینستاگرام هنوز شروع نشده است.
+نسخهٔ قابل‌فروش MVP است. App Review متا و دامنه (ADR-016) بازند.
 
 ## Tech stack (accepted)
 
@@ -22,7 +22,7 @@
 - [ADR-012](docs/04-architecture-decisions.md): monorepo با `pnpm` workspaces و `Turborepo`.
 - [ADR-015](docs/04-architecture-decisions.md): `Tailwind CSS` 4، الگوی `shadcn/ui`، و سیستم طراحی.
 
-ADR-001، ADR-002، ADR-003، ADR-012 و ADR-015 بازبینی شده و در نقشه‌ی راه `انجام‌شده` هستند. ADR-009 (ورود OTP)، ADR-011 (رمزنگاری AES-256-GCM)، ADR-014 و ADR-017 هم `Accepted` هستند. ADR-004 تا ADR-008، ADR-010، ADR-013 و ADR-016 (دامنه) هنوز `Proposed`اند.
+ADR-001، ADR-002، ADR-003، ADR-012 و ADR-015 بازبینی شده و در نقشه‌ی راه `انجام‌شده` هستند. ADR-009 (ورود OTP)، ADR-011 (رمزنگاری AES-256-GCM)، ADR-014، ADR-017 و ADR-018 (کارت‌به‌کارت) هم `Accepted` هستند. ADR-004 تا ADR-008، ADR-010، ADR-013 و ADR-016 (دامنه) هنوز `Proposed`اند.
 
 ## Key principles
 
@@ -90,6 +90,7 @@ Instagram Automation SaaS Platform/
 - [Glossary](docs/08-glossary.md)
 - [Design system](docs/09-design-system.md)
 - [Database design](docs/10-database.md)
+- [Launch checklist](docs/11-launch-checklist.md)
 
 ## Collaboration
 
@@ -115,7 +116,7 @@ Postgres و Redis دایرکتورا فقط روی loopback منتشر می‌ش
 
 ## کاتالوگ طراحی
 
-`/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. خانه‌ی سایت یک معرفی کوتاه است و دکمه‌ی «ورود به پنل» به `/login` می‌رود. بعد از ورود، پنل روی `/app` است.
+`/design` در توسعه همیشه باز است. در production فقط با `DESIGN_CATALOG=1` باز می‌شود و `robots` آن `noindex` است. صفحهٔ `/` معرفی محصول است. مسیرهای عمومی: `/privacy`، `/terms`، `/data-deletion` و `/contact`. پنل کاربر `/app` است و پنل مدیر `/admin`. ارتقای مدیر پلتفرم: `pnpm admin:promote -- +98...`. چک‌لیست راه‌اندازی در [docs/11-launch-checklist.md](docs/11-launch-checklist.md) است.
 
 ورود فقط با رمز یک‌بارمصرف موبایل است. متغیرهای نمونه، بدون مقدار واقعی، در `.env.example` هستند: `SMS_PROVIDER=console`، `AUTH_SECRET`، `ENCRYPTION_KEY` (۳۲ بایت hex یا base64)، `ENCRYPTION_KEY_ID=v1` و `SESSION_TTL_DAYS=30`. مقدار واقعی فقط در `.env` می‌ماند و commit نمی‌شود.
 
