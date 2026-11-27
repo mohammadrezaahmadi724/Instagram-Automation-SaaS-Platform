@@ -200,9 +200,15 @@ importers:
       '@directora/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@directora/instagram':
+        specifier: workspace:*
+        version: link:../../packages/instagram
       '@directora/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      bullmq:
+        specifier: 6.7.10
+        version: 6.7.10(ioredis@6.1.0(supports-color@7.2.0))(pg@8.23.1)
       ioredis:
         specifier: 6.1.0
         version: 6.1.0(supports-color@7.2.0)
@@ -270,6 +276,12 @@ importers:
       '@directora/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@directora/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@directora/instagram':
+        specifier: workspace:*
+        version: link:../../packages/instagram
       bullmq:
         specifier: 6.7.10
         version: 6.7.10(ioredis@6.1.0(supports-color@7.2.0))(pg@8.23.1)
@@ -371,10 +383,17 @@ importers:
         version: 5.1.1(@types/node@24.19.2)(jsdom@31.0.1)(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15))
 
   packages/instagram:
+    dependencies:
+      zod:
+        specifier: 4.6.7
+        version: 4.6.7
     devDependencies:
       '@directora/config':
         specifier: workspace:*
         version: link:../config
+      '@types/node':
+        specifier: 24.19.2
+        version: 24.19.2
       eslint:
         specifier: 9.39.5
         version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)

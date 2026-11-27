@@ -15,7 +15,9 @@
   "dependencies": {
     "@directora/core": "workspace:*",
     "@directora/db": "workspace:*",
+    "@directora/instagram": "workspace:*",
     "@directora/ui": "workspace:*",
+    "bullmq": "6.7.10",
     "ioredis": "6.1.0",
     "next": "16.4.6",
     "react": "19.3.1",
