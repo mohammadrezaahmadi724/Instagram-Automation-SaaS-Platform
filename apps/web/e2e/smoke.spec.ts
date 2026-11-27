@@ -76,7 +76,7 @@ test('home, catalog and shell', async ({ page }) => {
     await document.fonts.ready;
   });
   await expect(page.getByRole('heading', { name: 'فضای کاری من' })).toBeVisible();
-  await expect(page.getByText('اتصال رسمی Meta API در مرحلهٔ بعد فعال می‌شود.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'حسابی وصل نیست' })).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'پرش به محتوا' })).toBeFocused();
   const current = page.getByTestId('app-sidebar').getByRole('link', { name: 'داشبورد' });

@@ -6,6 +6,16 @@
 
 قالب این فایل Keep a Changelog است.
 
+## [0.5.0-phase2b] - 1405/09/06
+
+### Added
+
+- کلاینت رسمی Instagram API، تأیید امضای webhook و تطبیق دستور.
+- OAuth، callbackهای deauthorize و حذف داده، گیرندهٔ webhook و شبیه‌ساز dev.
+- پردازش صف `instagram.webhook` و تمدید توکن long-lived.
+- صفحه و API حساب، دستور، گزارش و آمار داشبورد.
+- تست واحد، integration و e2e برای همین مسیر.
+
 ## [0.4.0-phase2a] - 1405/09/06
 
 ### Changed

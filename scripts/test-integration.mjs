@@ -21,6 +21,13 @@ process.env.OTP_TEST_HELPER = '1';
 if (!process.env.AUTH_SECRET || process.env.AUTH_SECRET.length < 16) {
   process.env.AUTH_SECRET = 'integration-auth-secret';
 }
+if (!process.env.ENCRYPTION_KEY) process.env.ENCRYPTION_KEY = '11'.repeat(32);
+if (!process.env.ENCRYPTION_KEY_ID) process.env.ENCRYPTION_KEY_ID = 'v1';
+process.env.INSTAGRAM_API_MODE = 'mock';
+if (!process.env.META_APP_SECRET) process.env.META_APP_SECRET = 'integration-meta-app-secret';
+if (!process.env.META_WEBHOOK_VERIFY_TOKEN) {
+  process.env.META_WEBHOOK_VERIFY_TOKEN = 'integration-webhook-verify';
+}
 
 function run(args) {
   return new Promise((resolve, reject) => {
@@ -43,6 +50,7 @@ function run(args) {
 await runVitest('@directora/db', 'test/integration.test.ts');
 await runVitest('@directora/worker', 'test/ping.test.ts');
 await runVitest('@directora/web', 'test/auth.integration.test.ts');
+await runVitest('@directora/web', 'test/instagram.integration.test.ts');
 
 async function runVitest(filter, file) {
   const dir = mkdtempSync(path.join(tmpdir(), 'directora-vitest-'));

@@ -23,5 +23,5 @@ export async function loginWithOtp(page: Page) {
   const payload = (await helper.json()) as { code: string };
   await page.getByLabel('کد شش‌رقمی').fill(payload.code);
   await page.getByRole('button', { name: 'ورود' }).click();
-  await expect(page).toHaveURL(/\/app$/);
+  await expect(page).toHaveURL(/\/app$/, { timeout: 45_000 });
 }

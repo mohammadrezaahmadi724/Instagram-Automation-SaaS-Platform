@@ -97,6 +97,9 @@ jobs:
       SMS_PROVIDER: console
       OTP_TEST_HELPER: '1'
       SESSION_TTL_DAYS: '30'
+      INSTAGRAM_API_MODE: mock
+      META_APP_SECRET: ci-meta-app-secret
+      META_WEBHOOK_VERIFY_TOKEN: ci-webhook-verify
     services:
       postgres:
         image: postgres:18-alpine
