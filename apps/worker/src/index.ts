@@ -1,10 +1,15 @@
 import { pino } from 'pino';
+import { resolveInstagramMode } from '@directora/instagram';
+import { processWebhookJob, refreshDueTokens } from './process-event.js';
 import {
   createRedis,
   createSystemWorker,
   definedProductQueues,
+  instagramRefreshQueueName,
+  instagramWebhookQueueName,
   systemQueueName,
 } from './queues.js';
+import { Queue, Worker } from 'bullmq';
 import { readWorkerEnv } from './env.js';
 import { loadRootEnv } from './load-env.js';
 
@@ -28,9 +33,47 @@ connection.on('error', (error: Error) => {
   log.error({ name: error.name }, 'redis connection error');
 });
 
+try {
+  resolveInstagramMode(process.env);
+} catch {
+  log.error('instagram api mode is unavailable');
+  process.exit(1);
+}
+
 const worker = createSystemWorker(connection.duplicate(), (at) => {
   log.info({ at, queues: definedProductQueues() }, 'system.ping');
 });
+
+const instagramWorker = new Worker(
+  instagramWebhookQueueName,
+  async (job) => {
+    const eventId = typeof job.data?.eventId === 'string' ? job.data.eventId : '';
+    if (!eventId) return { ignored: true };
+    await processWebhookJob({
+      eventId,
+      attemptsMade: job.attemptsMade,
+      maxAttempts: job.opts.attempts ?? 3,
+      redis: connection.duplicate(),
+    });
+    return { ok: true };
+  },
+  { connection: connection.duplicate(), concurrency: 4 },
+);
+
+const refreshQueue = new Queue(instagramRefreshQueueName, { connection: connection.duplicate() });
+const refreshWorker = new Worker(
+  instagramRefreshQueueName,
+  async () => {
+    await refreshDueTokens();
+    return { ok: true };
+  },
+  { connection: connection.duplicate() },
+);
+await refreshQueue.upsertJobScheduler(
+  'instagram.token-refresh',
+  { every: 60 * 60 * 1000 },
+  { name: 'instagram.token-refresh', data: {} },
+);
 
 worker.on('error', (error: Error) => {
   log.error({ name: error.name }, 'worker error');
@@ -52,6 +95,9 @@ async function shutdown(signal: string) {
   }, 10_000);
   try {
     await worker.close();
+    await instagramWorker.close();
+    await refreshWorker.close();
+    await refreshQueue.close();
     await connection.quit();
     clearTimeout(timer);
     log.info({ signal }, 'shutdown complete');

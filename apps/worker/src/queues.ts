@@ -3,6 +3,8 @@ import { productQueueNames } from '@directora/core';
 import { Redis } from 'ioredis';
 
 export const systemQueueName = 'system';
+export const instagramWebhookQueueName = 'instagram.webhook';
+export const instagramRefreshQueueName = 'instagram.token-refresh';
 
 export function createRedis(url: string) {
   return new Redis(url, { maxRetriesPerRequest: null });
