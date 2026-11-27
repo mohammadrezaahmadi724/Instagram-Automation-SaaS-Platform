@@ -38,6 +38,7 @@ const nav: ShellNavItem[] = [
     group: 'سامانه',
     icon: <span aria-hidden="true">ش</span>,
   },
+  { href: '/app/help', label: 'راهنما', group: 'سامانه', icon: <span aria-hidden="true">ر</span> },
   {
     href: '/app/settings',
     label: 'تنظیمات',
@@ -52,6 +53,7 @@ const titles: Record<string, string> = {
   '/app/automations': 'دستورها',
   '/app/logs': 'گزارش ارسال',
   '/app/billing': 'اشتراک',
+  '/app/help': 'راهنما',
   '/app/settings': 'تنظیمات',
 };
 

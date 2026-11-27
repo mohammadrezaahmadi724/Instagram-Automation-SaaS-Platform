@@ -12,5 +12,9 @@ export type {
   ReceiptDraft,
 } from './payment-gateway.js';
 export { nextSubscriptionWindow } from './subscription-window.js';
+export { amountFromPlan, normalizeReceiptFields, pendingReceiptLimitError } from './receipt.js';
+export type { ReceiptFields } from './receipt.js';
+export { settingKeyError } from './settings-allowlist.js';
+export { decideAdminAccess } from './admin-access.js';
 export type { JalaliStyle } from './format/date.js';
 export type { ProductQueueName } from './queues.js';
