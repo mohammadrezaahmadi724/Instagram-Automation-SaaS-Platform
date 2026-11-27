@@ -28,7 +28,7 @@ out/
 .nuxt/
 coverage/
 *.log
-logs/
+/logs/
 tmp/
 temp/
 
