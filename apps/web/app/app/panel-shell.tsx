@@ -61,11 +61,13 @@ export function PanelShell({
   user,
   workspace,
   workspaces,
+  isSuperAdmin = false,
   children,
 }: {
   user: PublicUser;
   workspace: PublicWorkspace;
   workspaces: PublicWorkspace[];
+  isSuperAdmin?: boolean;
   children: ReactNode;
 }) {
   const pathname = usePathname();
@@ -97,7 +99,19 @@ export function PanelShell({
     <>
       <AppShell
         title={workspace.name}
-        nav={nav}
+        nav={
+          isSuperAdmin
+            ? [
+                ...nav,
+                {
+                  href: '/admin',
+                  label: 'پنل مدیریت',
+                  group: 'سامانه',
+                  icon: <span aria-hidden="true">م</span>,
+                },
+              ]
+            : nav
+        }
         currentPath={pathname}
         breadcrumb={[{ label: 'پنل', href: '/app' }, { label: title }]}
         workspaceControl={

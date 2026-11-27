@@ -91,7 +91,7 @@ export function HelpCenter({
         <p className="mt-2 text-sm text-muted">{toPersianDigits(String(categories.length))} دسته</p>
       </section>
       <Dialog open={article !== null} onOpenChange={(open) => !open && setArticle(null)}>
-        <DialogContent title={article?.titleFa ?? 'مطلب'} description={article?.summaryFa}>
+        <DialogContent title={article?.titleFa ?? 'مطلب'} description={article?.summaryFa ?? ''}>
           <p className="whitespace-pre-line text-sm leading-7">{article?.bodyMd}</p>
           <Button type="button" variant="outline" onClick={() => setArticle(null)}>
             بستن

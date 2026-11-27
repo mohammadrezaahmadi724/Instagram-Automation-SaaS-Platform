@@ -60,6 +60,10 @@ export async function billingOverview(token: string) {
               minFollowers: subscription.plan.minFollowers,
               maxFollowers: subscription.plan.maxFollowers,
             },
+            daysLeft: Math.max(
+              0,
+              Math.ceil((subscription.endsAt.getTime() - Date.now()) / 86_400_000),
+            ),
           }
         : null,
       plans: plans.map((plan) => ({
@@ -101,7 +105,11 @@ export async function submitReceipt(token: string, body: unknown) {
   const workspaceId = profile.data.workspace?.id;
   if (!client || !workspaceId) return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
   const record = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
-  const fields = normalizeReceiptFields(record);
+  const fields = normalizeReceiptFields({
+    referenceCode: record.referenceCode,
+    payerCardLast4: record.payerCardLast4,
+    note: record.note,
+  });
   if (!fields.ok) return { ok: false as const, status: 400, error: fields.error };
   if (typeof record.planId !== 'string') return { ok: false as const, status: 400, error: 'پلن معتبر نیست' };
   const plan = await client.plan.findUnique({ where: { id: record.planId } });
@@ -109,17 +117,17 @@ export async function submitReceipt(token: string, body: unknown) {
     plan ? { isActive: plan.isActive, priceRial: plan.priceRial } : null,
     record.amountRial,
   );
-  if (!priced.ok) return { ok: false as const, status: 400, error: priced.error };
+  if (!priced.ok || !plan) return { ok: false as const, status: 400, error: priced.ok ? 'این پلن قابل خرید نیست' : priced.error };
   const pending = await client.paymentReceipt.count({ where: { workspaceId, status: 'PENDING' } });
   const limited = pendingReceiptLimitError(pending);
   if (limited) return { ok: false as const, status: 409, error: limited };
   const draft = cardToCardGateway.prepare({
     workspaceId,
-    planId: plan!.id,
+    planId: plan.id,
     amountRial: priced.amountRial,
     referenceCode: fields.value.referenceCode,
-    payerCardLast4: fields.value.payerCardLast4,
-    note: fields.value.note,
+    ...(fields.value.payerCardLast4 ? { payerCardLast4: fields.value.payerCardLast4 } : {}),
+    ...(fields.value.note ? { note: fields.value.note } : {}),
     submittedByUserId: profile.data.user.id,
   });
   const receipt = await client.paymentReceipt.create({
@@ -129,8 +137,8 @@ export async function submitReceipt(token: string, body: unknown) {
       method: draft.method,
       amountRial: draft.amountRial,
       referenceCode: draft.referenceCode,
-      payerCardLast4: draft.payerCardLast4,
-      note: draft.note,
+      ...(draft.payerCardLast4 ? { payerCardLast4: draft.payerCardLast4 } : {}),
+      ...(draft.note ? { note: draft.note } : {}),
       status: draft.status,
       submittedByUserId: draft.submittedByUserId,
     },

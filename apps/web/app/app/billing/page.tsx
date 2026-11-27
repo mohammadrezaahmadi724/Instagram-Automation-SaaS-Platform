@@ -11,5 +11,11 @@ export default async function BillingPage() {
     return <p className="text-subtle">{overview.error}</p>;
   }
   const canPay = profile.workspace.role === 'ADMIN' || profile.workspace.role === 'OWNER';
-  return <BillingPanel {...overview.data} canPay={canPay} />;
+  return (
+    <BillingPanel
+      {...overview.data}
+      canPay={canPay}
+      daysLeft={overview.data.subscription?.daysLeft ?? 0}
+    />
+  );
 }

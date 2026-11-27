@@ -8,7 +8,7 @@ function safeCallback(value: string) {
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('directora_session')?.value;
   const { pathname } = request.nextUrl;
-  if (pathname.startsWith('/app') && !token) {
+  if ((pathname.startsWith('/app') || pathname.startsWith('/admin')) && !token) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('callback', safeCallback(pathname));
@@ -20,4 +20,4 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ['/app', '/app/:path*', '/login'] };
+export const config = { matcher: ['/app', '/app/:path*', '/admin', '/admin/:path*', '/login'] };

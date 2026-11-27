@@ -46,6 +46,7 @@ type Subscription = {
   status: string;
   startsAt: string;
   endsAt: string;
+  daysLeft: number;
   plan: {
     nameFa: string;
     code: string;
@@ -85,12 +86,14 @@ export function BillingPanel({
   receipts,
   cardToCard,
   canPay,
+  daysLeft,
 }: {
   subscription: Subscription | null;
   plans: Plan[];
   receipts: Receipt[];
   cardToCard: { cardNumber: string; iban: string; accountHolderName: string };
   canPay: boolean;
+  daysLeft: number;
 }) {
   const router = useRouter();
   const [plan, setPlan] = useState<Plan | null>(null);
@@ -99,8 +102,6 @@ export function BillingPanel({
   const [note, setNote] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
-  const ends = subscription ? new Date(subscription.endsAt) : null;
-  const daysLeft = ends ? Math.max(0, Math.ceil((ends.getTime() - Date.now()) / 86_400_000)) : 0;
   const span = subscription ? subscription.plan.durationDays : 1;
   const progress = Math.min(100, Math.max(0, ((span - daysLeft) / span) * 100));
 

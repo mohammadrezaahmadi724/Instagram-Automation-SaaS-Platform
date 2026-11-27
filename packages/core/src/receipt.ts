@@ -27,14 +27,18 @@ export function normalizeReceiptFields(input: {
     }
     note = input.note;
   }
-  return { ok: true, value: { referenceCode, payerCardLast4, note } };
+  const value: ReceiptFields = { referenceCode };
+  if (payerCardLast4) value.payerCardLast4 = payerCardLast4;
+  if (note) value.note = note;
+  return { ok: true, value };
 }
 
 /** Client-supplied amounts are ignored. The stored amount is always the plan price. */
 export function amountFromPlan(
   plan: { isActive: boolean; priceRial: bigint } | null,
-  _clientAmount?: unknown,
+  clientAmount?: unknown,
 ): { ok: true; amountRial: bigint } | { ok: false; error: string } {
+  void clientAmount;
   if (!plan || !plan.isActive || plan.priceRial <= 0n) {
     return { ok: false, error: 'این پلن قابل خرید نیست' };
   }
