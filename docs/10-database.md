@@ -15,6 +15,7 @@ Workspace 1 ── * InstagramAccount 1 ── * AutomationRule
 Workspace 1 ── * Subscription * ── 1 Plan
 Workspace 1 ── * PaymentReceipt * ── 1 Plan
 OtpCode  (بدون tenant، قبل از ورود)
+DataDeletionRequest  (بدون tenant، callback حذف دادهٔ Meta)
 WebhookEvent و AutomationLog به Workspace وصل می‌شوند
 ```
 
@@ -29,7 +30,8 @@ WebhookEvent و AutomationLog به Workspace وصل می‌شوند
 - `sessions`: توکن خام ذخیره نمی‌شود. `token_hash` یکتا است. حذف User این ردیف‌ها را CASCADE می‌کند، چون نشست بدون کاربر معنی ندارد. `active_workspace_id` با `ON DELETE SET NULL` است تا حذف Workspace نشست را نابود نکند؛ عضویت همیشه در کد چک می‌شود.
 - `otp_codes`: قبل از ورود ساخته می‌شود و tenant نیست. `code_hash` با pepper است. plaintext ذخیره نمی‌شود. ایندکس `(phone_e164, created_at)` و `(phone_e164, consumed_at)`.
 - `instagram_accounts`: فقط فیلدهای API رسمی Meta. رمز عبور اینستاگرام وجود ندارد. `followers_count` برای تطبیق با سقف پلن در پرامپت‌های بعد است. یکتا روی `(workspace_id, ig_user_id)`. ciphertext توکن کنار `token_key_id` می‌ماند (ADR-011).
-- `automation_rules` و `automation_logs` و `webhook_events`: اسکیمای موتور بعدی. `webhook_events.external_event_id` یکتا است تا رویداد تکراری دو بار پردازش نشود. لاگ ایندکس `(workspace_id, created_at)` دارد.
+- `automation_rules` و `automation_logs` و `webhook_events`: `webhook_events.external_event_id` یکتا است تا رویداد تکراری دو بار پردازش نشود. وضعیت لاگ `SKIPPED_PLAN_LIMIT` هم دارد. لاگ ایندکس `(workspace_id, created_at)` دارد.
+- `data_deletion_requests`: درخواست حذف دادهٔ Meta. `confirmation_code` یکتا است. این جدول tenant نیست و شناسهٔ اینستاگرام را در صفحهٔ وضعیت نشان نمی‌دهد.
 - `plans`: کد یکتا. `price_rial` از نوع `BigInt`. `min_followers` / `max_followers` سقف دنبال‌کننده است و `null` یعنی نامحدود. `features_json` فلگ ماژول‌های افزودنی است و در این فاز فقط seed می‌شود. مدیریت این ردیف‌ها با Super Admin در پرامپت پرداخت است.
 - `subscriptions` و `payment_receipts`: اسکلت اشتراک و فیش. آپلود فیش و تأیید در این فاز نیست.
 

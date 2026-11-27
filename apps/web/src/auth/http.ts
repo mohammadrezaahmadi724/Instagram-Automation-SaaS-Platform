@@ -32,9 +32,16 @@ export function clientIp(request: Request) {
   return forwarded || 'local';
 }
 
+const metaSignaturePaths = new Set([
+  '/api/webhooks/instagram',
+  '/api/instagram/deauthorize',
+  '/api/instagram/data-deletion',
+]);
+
 export function rejectCrossSite(request: Request) {
   const method = request.method.toUpperCase();
   if (method === 'GET' || method === 'HEAD' || method === 'OPTIONS') return null;
+  if (metaSignaturePaths.has(new URL(request.url).pathname)) return null;
   const origin = request.headers.get('origin');
   if (!origin) return null;
   const host = request.headers.get('host');

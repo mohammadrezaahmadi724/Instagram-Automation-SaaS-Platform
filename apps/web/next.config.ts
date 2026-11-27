@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   ...(isDev ? { allowedDevOrigins: ['127.0.0.1'] } : {}),
-  transpilePackages: ['@directora/ui', '@directora/core', '@directora/db'],
+  transpilePackages: ['@directora/ui', '@directora/core', '@directora/db', '@directora/instagram'],
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

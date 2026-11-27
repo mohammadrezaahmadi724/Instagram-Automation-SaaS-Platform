@@ -73,8 +73,16 @@ enum AutomationLogStatus {
   SKIPPED_WINDOW
   SKIPPED_COOLDOWN
   RATE_LIMITED
+  SKIPPED_PLAN_LIMIT
 
   @@map("automation_log_status")
+}
+
+enum DataDeletionStatus {
+  RECEIVED
+  COMPLETED
+
+  @@map("data_deletion_status")
 }
 
 enum SubscriptionStatus {
@@ -180,6 +188,18 @@ model OtpCode {
   @@index([phoneE164, createdAt])
   @@index([phoneE164, consumedAt])
   @@map("otp_codes")
+}
+
+/// Meta data-deletion callback. Not tenant-owned; it arrives before a workspace is known.
+model DataDeletionRequest {
+  id               String             @id @default(uuid(7)) @db.Uuid
+  confirmationCode String             @unique @map("confirmation_code")
+  igUserId         String?            @map("ig_user_id")
+  status           DataDeletionStatus @default(RECEIVED)
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  completedAt      DateTime?          @map("completed_at") @db.Timestamptz(3)
+
+  @@map("data_deletion_requests")
 }
 
 model InstagramAccount {
