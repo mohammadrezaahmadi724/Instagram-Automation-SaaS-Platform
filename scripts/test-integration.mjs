@@ -51,6 +51,7 @@ await runVitest('@directora/db', 'test/integration.test.ts');
 await runVitest('@directora/worker', 'test/ping.test.ts');
 await runVitest('@directora/web', 'test/auth.integration.test.ts');
 await runVitest('@directora/web', 'test/instagram.integration.test.ts');
+await runVitest('@directora/web', 'test/billing.integration.test.ts');
 
 async function runVitest(filter, file) {
   const dir = mkdtempSync(path.join(tmpdir(), 'directora-vitest-'));
