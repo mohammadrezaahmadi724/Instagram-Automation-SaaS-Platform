@@ -47,21 +47,40 @@ export function HelpAdmin({ categories }: { categories: Category[] }) {
           void addCategory();
         }}
       >
-        <Input value={titleFa} onChange={(event) => setTitleFa(event.target.value)} aria-label="عنوان دسته" />
-        <Input value={slug} onChange={(event) => setSlug(event.target.value)} aria-label="نامک دسته" />
+        <Input
+          value={titleFa}
+          onChange={(event) => setTitleFa(event.target.value)}
+          aria-label="عنوان دسته"
+        />
+        <Input
+          value={slug}
+          onChange={(event) => setSlug(event.target.value)}
+          aria-label="نامک دسته"
+        />
         <Button type="submit">دسته جدید</Button>
       </form>
       {categories.length === 0 ? (
-        <EmptyState kind="first-use" title="دسته‌ای نیست" description="اولین دسته راهنما را بسازید." />
+        <EmptyState
+          kind="first-use"
+          title="دسته‌ای نیست"
+          description="اولین دسته راهنما را بسازید."
+        />
       ) : (
         categories.map((category) => (
-          <section key={category.id} className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+          <section
+            key={category.id}
+            className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4"
+          >
             <h2 className="text-lg font-semibold">{category.titleFa}</h2>
             {category.articles.map((article) => (
               <div key={article.id} className="flex flex-col gap-2">
                 <p>{article.titleFa}</p>
                 <Textarea value={article.bodyMd} readOnly aria-label={article.titleFa} />
-                <Button type="button" variant="outline" onClick={() => void removeArticle(article.id)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => void removeArticle(article.id)}
+                >
                   حذف مقاله
                 </Button>
               </div>

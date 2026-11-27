@@ -20,7 +20,10 @@ export default async function AdminHomePage() {
         {cards.map(([label, value]) => (
           <StatCard key={label} label={label} value={toPersianDigits(String(value))} />
         ))}
-        <StatCard label="مجموع تأییدشده" value={formatRialAsToman(BigInt(stats.approvedAmountRial))} />
+        <StatCard
+          label="مجموع تأییدشده"
+          value={formatRialAsToman(BigInt(stats.approvedAmountRial))}
+        />
       </div>
       <Link href="/admin/receipts" className="inline-flex min-h-11 items-center text-link">
         فیش‌های در انتظار

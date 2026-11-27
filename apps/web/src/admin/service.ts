@@ -20,7 +20,8 @@ export async function requireSuperAdmin(token: string | null) {
   if (decision === 'unauthenticated' || !session) {
     return { ok: false as const, status: 401, error: 'وارد نشده‌اید' };
   }
-  if (decision === 'forbidden') return { ok: false as const, status: 403, error: 'اجازه این کار را ندارید' };
+  if (decision === 'forbidden')
+    return { ok: false as const, status: 403, error: 'اجازه این کار را ندارید' };
   return { ok: true as const, userId: session.user.id };
 }
 
@@ -126,7 +127,10 @@ export async function approveReceipt(id: string, reviewerId: string) {
   if (!client) return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
   try {
     const result = await client.$transaction(async (tx) => {
-      const receipt = await tx.paymentReceipt.findUnique({ where: { id }, include: { plan: true } });
+      const receipt = await tx.paymentReceipt.findUnique({
+        where: { id },
+        include: { plan: true },
+      });
       if (!receipt || receipt.status !== 'PENDING') throw new Error('not-pending');
       const subscription = await applyPlan(
         tx as Tx,
@@ -163,9 +167,15 @@ export async function rejectReceipt(id: string, reviewerId: string, reviewNote: 
   if (!client) return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
   const updated = await client.paymentReceipt.updateMany({
     where: { id, status: 'PENDING' },
-    data: { status: 'REJECTED', reviewedByUserId: reviewerId, reviewedAt: new Date(), reviewNote: note },
+    data: {
+      status: 'REJECTED',
+      reviewedByUserId: reviewerId,
+      reviewedAt: new Date(),
+      reviewNote: note,
+    },
   });
-  if (updated.count !== 1) return { ok: false as const, status: 409, error: 'این فیش قبلاً بررسی شده است' };
+  if (updated.count !== 1)
+    return { ok: false as const, status: 409, error: 'این فیش قبلاً بررسی شده است' };
   return { ok: true as const, data: { status: 'REJECTED' } };
 }
 
@@ -179,7 +189,10 @@ export async function grantSubscription(workspaceId: string, planId: string) {
   const subscription = await client.$transaction((tx) =>
     applyPlan(tx as Tx, workspaceId, plan.id, plan.durationDays, new Date()),
   );
-  return { ok: true as const, data: { id: subscription.id, endsAt: subscription.endsAt.toISOString() } };
+  return {
+    ok: true as const,
+    data: { id: subscription.id, endsAt: subscription.endsAt.toISOString() },
+  };
 }
 
 const featureKeys = ['aiReply', 'smsAddon', 'formBuilder', 'showcase'] as const;
@@ -188,7 +201,8 @@ export function parsePlanInput(body: unknown, withCode: boolean) {
   const record = body && typeof body === 'object' ? (body as Record<string, unknown>) : null;
   if (!record) return { ok: false as const, error: 'دادهٔ پلن معتبر نیست' };
   const nameFa = typeof record.nameFa === 'string' ? record.nameFa.trim() : '';
-  if (nameFa.length < 2 || nameFa.length > 80) return { ok: false as const, error: 'نام پلن معتبر نیست' };
+  if (nameFa.length < 2 || nameFa.length > 80)
+    return { ok: false as const, error: 'نام پلن معتبر نیست' };
   let price: bigint | null = null;
   if (typeof record.priceRial === 'string' || typeof record.priceRial === 'number') {
     try {
@@ -205,8 +219,10 @@ export function parsePlanInput(body: unknown, withCode: boolean) {
   const maxFollowers = record.maxFollowers === null ? null : Number(record.maxFollowers);
   const maxInstagramAccounts = Number(record.maxInstagramAccounts);
   const maxMonthlyExecutions = Number(record.maxMonthlyExecutions);
-  if (!Number.isInteger(durationDays) || durationDays < 1) return { ok: false as const, error: 'مدت پلن معتبر نیست' };
-  if (!Number.isInteger(minFollowers) || minFollowers < 0) return { ok: false as const, error: 'کف فالوور معتبر نیست' };
+  if (!Number.isInteger(durationDays) || durationDays < 1)
+    return { ok: false as const, error: 'مدت پلن معتبر نیست' };
+  if (!Number.isInteger(minFollowers) || minFollowers < 0)
+    return { ok: false as const, error: 'کف فالوور معتبر نیست' };
   if (maxFollowers !== null && (!Number.isInteger(maxFollowers) || maxFollowers < minFollowers)) {
     return { ok: false as const, error: 'سقف فالوور معتبر نیست' };
   }
@@ -216,7 +232,10 @@ export function parsePlanInput(body: unknown, withCode: boolean) {
   if (!Number.isInteger(maxMonthlyExecutions) || maxMonthlyExecutions < 1) {
     return { ok: false as const, error: 'سقف اجرا معتبر نیست' };
   }
-  const features = record.featuresJson && typeof record.featuresJson === 'object' ? (record.featuresJson as Record<string, unknown>) : {};
+  const features =
+    record.featuresJson && typeof record.featuresJson === 'object'
+      ? (record.featuresJson as Record<string, unknown>)
+      : {};
   const featuresJson = Object.fromEntries(featureKeys.map((key) => [key, features[key] === true]));
   let code: string | undefined;
   if (withCode) {
@@ -294,7 +313,10 @@ export async function listUsers(query: string) {
     ...(query
       ? {
           where: {
-            OR: [{ displayName: { contains: query, mode: 'insensitive' as const } }, { phoneE164: { contains: query } }],
+            OR: [
+              { displayName: { contains: query, mode: 'insensitive' as const } },
+              { phoneE164: { contains: query } },
+            ],
           },
         }
       : {}),
@@ -345,7 +367,8 @@ export async function setUserActive(actorId: string, userId: string, isActive: b
     const others = await client.user.count({
       where: { isSuperAdmin: true, isActive: true, id: { not: target.id } },
     });
-    if (others < 1) return { ok: false as const, status: 400, error: 'آخرین مدیر پلتفرم را نمی‌توان تعلیق کرد' };
+    if (others < 1)
+      return { ok: false as const, status: 400, error: 'آخرین مدیر پلتفرم را نمی‌توان تعلیق کرد' };
   }
   await client.user.update({ where: { id: userId }, data: { isActive } });
   return { ok: true as const, data: { isActive } };

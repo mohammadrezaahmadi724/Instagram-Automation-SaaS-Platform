@@ -52,7 +52,11 @@ export default function AdminSettingsPage() {
       </label>
       <label className="flex flex-col gap-1 text-sm">
         شبا
-        <Input value={card.iban ?? ''} onChange={(event) => setCard({ ...card, iban: event.target.value })} dir="ltr" />
+        <Input
+          value={card.iban ?? ''}
+          onChange={(event) => setCard({ ...card, iban: event.target.value })}
+          dir="ltr"
+        />
       </label>
       <label className="flex flex-col gap-1 text-sm">
         نام صاحب حساب

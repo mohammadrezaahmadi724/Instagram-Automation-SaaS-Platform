@@ -27,7 +27,9 @@ const flags = [
 ] as const;
 
 function enabled(value: unknown, key: string) {
-  return Boolean(value && typeof value === 'object' && (value as Record<string, unknown>)[key] === true);
+  return Boolean(
+    value && typeof value === 'object' && (value as Record<string, unknown>)[key] === true,
+  );
 }
 
 export function PlansEditor({ plans }: { plans: Plan[] }) {
@@ -35,7 +37,9 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
   const [rows, setRows] = useState(plans);
 
   async function save(plan: Plan) {
-    const featuresJson = Object.fromEntries(flags.map(([key]) => [key, enabled(plan.featuresJson, key)]));
+    const featuresJson = Object.fromEntries(
+      flags.map(([key]) => [key, enabled(plan.featuresJson, key)]),
+    );
     const response = await fetch(`/api/admin/plans/${plan.id}`, {
       method: 'PATCH',
       headers: { 'content-type': 'application/json' },
@@ -70,7 +74,9 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
               value={plan.nameFa}
               onChange={(event) =>
                 setRows((current) =>
-                  current.map((item) => (item.id === plan.id ? { ...item, nameFa: event.target.value } : item)),
+                  current.map((item) =>
+                    item.id === plan.id ? { ...item, nameFa: event.target.value } : item,
+                  ),
                 )
               }
             />
@@ -96,7 +102,9 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
               onChange={(event) =>
                 setRows((current) =>
                   current.map((item) =>
-                    item.id === plan.id ? { ...item, minFollowers: Number(event.target.value) } : item,
+                    item.id === plan.id
+                      ? { ...item, minFollowers: Number(event.target.value) }
+                      : item,
                   ),
                 )
               }
@@ -110,7 +118,11 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
                 setRows((current) =>
                   current.map((item) =>
                     item.id === plan.id
-                      ? { ...item, maxFollowers: event.target.value === '' ? null : Number(event.target.value) }
+                      ? {
+                          ...item,
+                          maxFollowers:
+                            event.target.value === '' ? null : Number(event.target.value),
+                        }
                       : item,
                   ),
                 )
@@ -129,7 +141,9 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
                         ? {
                             ...item,
                             featuresJson: {
-                              ...(item.featuresJson && typeof item.featuresJson === 'object' ? item.featuresJson : {}),
+                              ...(item.featuresJson && typeof item.featuresJson === 'object'
+                                ? item.featuresJson
+                                : {}),
                               [key]: checked,
                             },
                           }
@@ -147,7 +161,9 @@ export function PlansEditor({ plans }: { plans: Plan[] }) {
               checked={plan.isActive}
               onCheckedChange={(checked) =>
                 setRows((current) =>
-                  current.map((item) => (item.id === plan.id ? { ...item, isActive: checked } : item)),
+                  current.map((item) =>
+                    item.id === plan.id ? { ...item, isActive: checked } : item,
+                  ),
                 )
               }
               aria-label="فعال بودن پلن"

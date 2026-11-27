@@ -53,7 +53,10 @@ export function HelpCenter({
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {filtered.map((category) => (
-            <section key={category.id} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+            <section
+              key={category.id}
+              className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4"
+            >
               <h2 className="text-lg font-semibold">
                 <span className="me-2 inline-flex size-8 items-center justify-center rounded-full bg-primary-subtle text-primary">
                   {category.icon}

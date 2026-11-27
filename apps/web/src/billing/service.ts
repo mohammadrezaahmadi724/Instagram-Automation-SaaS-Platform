@@ -22,7 +22,8 @@ export async function billingOverview(token: string) {
   if (!profile.ok) return profile;
   const client = db();
   const workspaceId = profile.data.workspace?.id;
-  if (!client || !workspaceId) return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
+  if (!client || !workspaceId)
+    return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
   const [subscription, plans, receipts, setting] = await Promise.all([
     client.subscription.findFirst({
       where: { workspaceId, status: { in: ['TRIAL', 'ACTIVE', 'PAST_DUE'] } },
@@ -103,7 +104,8 @@ export async function submitReceipt(token: string, body: unknown) {
   if (!profile.ok) return profile;
   const client = db();
   const workspaceId = profile.data.workspace?.id;
-  if (!client || !workspaceId) return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
+  if (!client || !workspaceId)
+    return { ok: false as const, status: 500, error: 'داده در دسترس نیست' };
   const record = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
   const fields = normalizeReceiptFields({
     referenceCode: record.referenceCode,
@@ -111,13 +113,19 @@ export async function submitReceipt(token: string, body: unknown) {
     note: record.note,
   });
   if (!fields.ok) return { ok: false as const, status: 400, error: fields.error };
-  if (typeof record.planId !== 'string') return { ok: false as const, status: 400, error: 'پلن معتبر نیست' };
+  if (typeof record.planId !== 'string')
+    return { ok: false as const, status: 400, error: 'پلن معتبر نیست' };
   const plan = await client.plan.findUnique({ where: { id: record.planId } });
   const priced = amountFromPlan(
     plan ? { isActive: plan.isActive, priceRial: plan.priceRial } : null,
     record.amountRial,
   );
-  if (!priced.ok || !plan) return { ok: false as const, status: 400, error: priced.ok ? 'این پلن قابل خرید نیست' : priced.error };
+  if (!priced.ok || !plan)
+    return {
+      ok: false as const,
+      status: 400,
+      error: priced.ok ? 'این پلن قابل خرید نیست' : priced.error,
+    };
   const pending = await client.paymentReceipt.count({ where: { workspaceId, status: 'PENDING' } });
   const limited = pendingReceiptLimitError(pending);
   if (limited) return { ok: false as const, status: 409, error: limited };

@@ -14,7 +14,11 @@ export function normalizeReceiptFields(input: {
     return { ok: false, error: 'شماره پیگیری باید بین ۴ تا ۶۴ نویسه باشد' };
   }
   let payerCardLast4: string | undefined;
-  if (input.payerCardLast4 !== undefined && input.payerCardLast4 !== null && input.payerCardLast4 !== '') {
+  if (
+    input.payerCardLast4 !== undefined &&
+    input.payerCardLast4 !== null &&
+    input.payerCardLast4 !== ''
+  ) {
     if (typeof input.payerCardLast4 !== 'string' || !/^\d{4}$/.test(input.payerCardLast4)) {
       return { ok: false, error: 'چهار رقم کارت باید دقیقاً چهار عدد باشد' };
     }

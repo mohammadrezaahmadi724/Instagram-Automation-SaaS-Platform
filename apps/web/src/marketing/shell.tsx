@@ -11,23 +11,26 @@ export function BrandMark() {
   if (existsSync(logo)) {
     return (
       <span className="inline-flex rounded-lg bg-brand-plate p-3">
-        <Image src="/brand/directora-logo.png" alt="لوگوی دایرکتورا" width={160} height={48} priority />
+        <Image
+          src="/brand/directora-logo.png"
+          alt="لوگوی دایرکتورا"
+          width={160}
+          height={48}
+          priority
+        />
       </span>
     );
   }
   return <span className="text-xl font-extrabold">دایرکتورا</span>;
 }
 
-export function MarketingShell({
-  loggedIn,
-  children,
-}: {
-  loggedIn: boolean;
-  children: ReactNode;
-}) {
+export function MarketingShell({ loggedIn, children }: { loggedIn: boolean; children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-surface focus:p-3">
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-surface focus:p-3"
+      >
         پرش به محتوا
       </a>
       <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
@@ -44,7 +47,10 @@ export function MarketingShell({
           <Link href="/#faq" className="inline-flex min-h-11 items-center">
             سوالات متداول
           </Link>
-          <Link href={loggedIn ? '/app/help' : '/login'} className="inline-flex min-h-11 items-center">
+          <Link
+            href={loggedIn ? '/app/help' : '/login'}
+            className="inline-flex min-h-11 items-center"
+          >
             راهنما
           </Link>
           <ThemeToggle />

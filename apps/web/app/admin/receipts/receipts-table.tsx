@@ -65,7 +65,11 @@ export function ReceiptsTable({ rows }: { rows: Receipt[] }) {
 
   if (rows.length === 0) {
     return (
-      <EmptyState kind="first-use" title="فیش در انتظاری نیست" description="فیش‌های تازه‌ثبت‌شده اینجا دیده می‌شوند." />
+      <EmptyState
+        kind="first-use"
+        title="فیش در انتظاری نیست"
+        description="فیش‌های تازه‌ثبت‌شده اینجا دیده می‌شوند."
+      />
     );
   }
 
@@ -88,7 +92,9 @@ export function ReceiptsTable({ rows }: { rows: Receipt[] }) {
               <tr key={row.id} className="border-t border-border">
                 <td className="px-3 py-3">{row.workspaceName}</td>
                 <td className="px-3 py-3">{row.planName}</td>
-                <td className="px-3 py-3 tabular-nums">{formatRialAsToman(BigInt(row.amountRial))}</td>
+                <td className="px-3 py-3 tabular-nums">
+                  {formatRialAsToman(BigInt(row.amountRial))}
+                </td>
                 <td className="px-3 py-3">
                   <bdi dir="ltr">{row.referenceCode}</bdi>
                   {row.payerCardLast4 ? (
@@ -118,7 +124,11 @@ export function ReceiptsTable({ rows }: { rows: Receipt[] }) {
       </div>
       <Dialog open={rejecting !== null} onOpenChange={(open) => !open && setRejecting(null)}>
         <DialogContent title="رد فیش" description="دلیل رد برای کاربر ذخیره می‌شود.">
-          <Textarea value={reason} onChange={(event) => setReason(event.target.value)} aria-label="دلیل رد" />
+          <Textarea
+            value={reason}
+            onChange={(event) => setReason(event.target.value)}
+            aria-label="دلیل رد"
+          />
           {error ? <FieldError id="reject-error">{error}</FieldError> : null}
           <DialogActions>
             <Button type="button" onClick={() => void reject()}>

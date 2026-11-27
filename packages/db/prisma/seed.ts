@@ -213,4 +213,6 @@ for (const [index, category] of help.entries()) {
 }
 
 await prisma.$disconnect();
-console.log(`seed: ${plans.length} plans, ${settings.length} settings, ${help.length} help categories`);
+console.log(
+  `seed: ${plans.length} plans, ${settings.length} settings, ${help.length} help categories`,
+);

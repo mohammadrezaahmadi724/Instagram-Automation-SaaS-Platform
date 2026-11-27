@@ -9,7 +9,11 @@ type UserRow = {
   phoneE164: string;
   displayName: string | null;
   isActive: boolean;
-  workspaces: { id: string; name: string; subscription: { status: string; planName: string } | null }[];
+  workspaces: {
+    id: string;
+    name: string;
+    subscription: { status: string; planName: string } | null;
+  }[];
 };
 
 type Plan = { id: string; nameFa: string };
@@ -52,7 +56,12 @@ export function UsersTable({ users, plans }: { users: UserRow[]; plans: Plan[] }
   return (
     <div className="flex flex-col gap-4">
       <form className="flex gap-2" action="/admin/users">
-        <Input name="q" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="جستجوی کاربر" />
+        <Input
+          name="q"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          aria-label="جستجوی کاربر"
+        />
         <Button type="submit" variant="outline">
           جستجو
         </Button>
@@ -61,7 +70,10 @@ export function UsersTable({ users, plans }: { users: UserRow[]; plans: Plan[] }
         <EmptyState kind="filter" title="کاربری نیست" description="عبارت جستجو را عوض کنید." />
       ) : (
         users.map((user) => (
-          <article key={user.id} className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+          <article
+            key={user.id}
+            className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4"
+          >
             <p>
               {user.displayName || 'بدون نام'} · <bdi dir="ltr">{user.phoneE164}</bdi>
             </p>
@@ -78,7 +90,11 @@ export function UsersTable({ users, plans }: { users: UserRow[]; plans: Plan[] }
                     : 'بدون اشتراک'}
                 </span>
                 {firstPlan ? (
-                  <Button type="button" variant="outline" onClick={() => void grant(workspace.id, firstPlan.id)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => void grant(workspace.id, firstPlan.id)}
+                  >
                     اعطای {firstPlan.nameFa}
                   </Button>
                 ) : null}

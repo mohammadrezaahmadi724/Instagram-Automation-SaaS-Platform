@@ -23,12 +23,24 @@ const features = [
 ];
 
 const questions = [
-  ['آیا رمز پیج لازم است؟', 'نه. اتصال فقط با ورود رسمی متا است و رمز اینستاگرام گرفته یا ذخیره نمی‌شود.'],
+  [
+    'آیا رمز پیج لازم است؟',
+    'نه. اتصال فقط با ورود رسمی متا است و رمز اینستاگرام گرفته یا ذخیره نمی‌شود.',
+  ],
   ['آیا API رسمی است؟', 'بله. فقط Instagram Platform روی graph.instagram.com استفاده می‌شود.'],
-  ['پنجرهٔ ۲۴ ساعته و ۷ روزه چیست؟', 'دایرکت و پاسخ استوری تا ۲۴ ساعت پس از اقدام کاربر است. پاسخ خصوصی هر کامنت یک بار و تا ۷ روز است.'],
+  [
+    'پنجرهٔ ۲۴ ساعته و ۷ روزه چیست؟',
+    'دایرکت و پاسخ استوری تا ۲۴ ساعت پس از اقدام کاربر است. پاسخ خصوصی هر کامنت یک بار و تا ۷ روز است.',
+  ],
   ['دورهٔ آزمایشی چند روز است؟', 'پلن آزمایشی ۷ روز است.'],
-  ['تفاوت پلن زیر و بالای ۲۵ هزار فالوور چیست؟', 'پلن رشد تا ۲۴۹۹۹ فالوور است و پلن حرفه‌ای از ۲۵۰۰۰ فالوور به بالا.'],
-  ['پرداخت چطور انجام می‌شود؟', 'کارت‌به‌کارت است. شماره پیگیری را ثبت می‌کنید و مدیر پلتفرم فیش را تأیید می‌کند. درگاه آنلاین هنوز فعال نیست.'],
+  [
+    'تفاوت پلن زیر و بالای ۲۵ هزار فالوور چیست؟',
+    'پلن رشد تا ۲۴۹۹۹ فالوور است و پلن حرفه‌ای از ۲۵۰۰۰ فالوور به بالا.',
+  ],
+  [
+    'پرداخت چطور انجام می‌شود؟',
+    'کارت‌به‌کارت است. شماره پیگیری را ثبت می‌کنید و مدیر پلتفرم فیش را تأیید می‌کند. درگاه آنلاین هنوز فعال نیست.',
+  ],
 ];
 
 function tier(code: string, maxFollowers: number | null, minFollowers: number) {
@@ -45,13 +57,18 @@ export default async function HomePage() {
   const session = token ? await loadSession(token) : null;
   const url = process.env.DATABASE_URL;
   const plans = url
-    ? await getPrisma(url).plan.findMany({ where: { isActive: true }, orderBy: { priceRial: 'asc' } })
+    ? await getPrisma(url).plan.findMany({
+        where: { isActive: true },
+        orderBy: { priceRial: 'asc' },
+      })
     : [];
   return (
     <MarketingShell loggedIn={Boolean(session)}>
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-12 md:grid-cols-2">
         <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-extrabold leading-tight">اتوماسیون هوشمند و ۱۰۰٪ رسمی اینستاگرام</h1>
+          <h1 className="text-4xl font-extrabold leading-tight">
+            اتوماسیون هوشمند و ۱۰۰٪ رسمی اینستاگرام
+          </h1>
           <p className="text-lg text-subtle">
             پاسخ خودکار به کامنت، دایرکت و استوری، بدون نیاز به رمز عبور پیج.
           </p>
@@ -62,7 +79,10 @@ export default async function HomePage() {
             >
               شروع ۷ روز رایگان
             </Link>
-            <a href="#pricing" className="inline-flex min-h-12 items-center rounded-md border border-border px-5">
+            <a
+              href="#pricing"
+              className="inline-flex min-h-12 items-center rounded-md border border-border px-5"
+            >
               مشاهده تعرفه‌ها
             </a>
           </div>
@@ -72,12 +92,17 @@ export default async function HomePage() {
             <Badge>نمونهٔ تصویری</Badge>
             <p className="font-semibold">دستور: قیمت</p>
             <p className="rounded-md bg-surface-sunken p-3 text-sm">کامنت: قیمت؟</p>
-            <p className="rounded-md border border-border p-3 text-sm">دایرکت: فهرست قیمت را برایتان فرستادم.</p>
+            <p className="rounded-md border border-border p-3 text-sm">
+              دایرکت: فهرست قیمت را برایتان فرستادم.
+            </p>
             <p className="text-sm text-muted">این کارت دادهٔ زندهٔ مشتری نیست.</p>
           </CardContent>
         </Card>
       </section>
-      <section id="features" className="mx-auto grid w-full max-w-6xl gap-4 px-4 py-8 md:grid-cols-3">
+      <section
+        id="features"
+        className="mx-auto grid w-full max-w-6xl gap-4 px-4 py-8 md:grid-cols-3"
+      >
         {features.map(([title, text]) => (
           <article key={title} className="rounded-lg border border-border bg-surface p-4">
             <h2 className="text-lg font-semibold">{title}</h2>
@@ -92,10 +117,15 @@ export default async function HomePage() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {plans.map((plan) => (
-              <article key={plan.id} className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+              <article
+                key={plan.id}
+                className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4"
+              >
                 <h3 className="text-lg font-semibold">{plan.nameFa}</h3>
                 <Badge>{tier(plan.code, plan.maxFollowers, plan.minFollowers)}</Badge>
-                <p className="tabular-nums text-2xl font-bold">{formatRialAsToman(plan.priceRial)}</p>
+                <p className="tabular-nums text-2xl font-bold">
+                  {formatRialAsToman(plan.priceRial)}
+                </p>
                 <p className="text-sm text-subtle">
                   {toPersianDigits(String(plan.maxInstagramAccounts))} حساب ·{' '}
                   {toPersianDigits(String(plan.durationDays))} روز

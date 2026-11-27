@@ -150,7 +150,9 @@ export function BillingPanel({
             <Badge variant="primary">{tier(subscription.plan)}</Badge>
             <Badge>{subscription.status === 'ACTIVE' ? 'فعال' : subscription.status}</Badge>
           </div>
-          <p className="tabular-nums text-subtle">{toPersianDigits(String(daysLeft))} روز باقی‌مانده</p>
+          <p className="tabular-nums text-subtle">
+            {toPersianDigits(String(daysLeft))} روز باقی‌مانده
+          </p>
           <div className="h-2 overflow-hidden rounded-full bg-surface-sunken" aria-hidden="true">
             <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
           </div>
@@ -164,12 +166,17 @@ export function BillingPanel({
       )}
       <div className="grid gap-4 md:grid-cols-2">
         {plans.map((item) => (
-          <article key={item.id} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
+          <article
+            key={item.id}
+            className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4"
+          >
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-lg font-semibold">{item.nameFa}</h2>
               <Badge>{tier(item)}</Badge>
             </div>
-            <p className="tabular-nums text-xl font-bold">{formatRialAsToman(BigInt(item.priceRial))}</p>
+            <p className="tabular-nums text-xl font-bold">
+              {formatRialAsToman(BigInt(item.priceRial))}
+            </p>
             <p className="text-sm text-subtle">
               {toPersianDigits(String(item.maxInstagramAccounts))} حساب ·{' '}
               {toPersianDigits(String(item.maxMonthlyExecutions))} اجرا در ماه
@@ -199,7 +206,11 @@ export function BillingPanel({
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-semibold">فیش‌ها</h2>
         {receipts.length === 0 ? (
-          <EmptyState kind="first-use" title="فیشی ثبت نشده" description="پس از واریز، شماره پیگیری را همین‌جا ثبت کنید." />
+          <EmptyState
+            kind="first-use"
+            title="فیشی ثبت نشده"
+            description="پس از واریز، شماره پیگیری را همین‌جا ثبت کنید."
+          />
         ) : (
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-sm">
@@ -215,7 +226,9 @@ export function BillingPanel({
                 {receipts.map((receipt) => (
                   <tr key={receipt.id} className="border-t border-border">
                     <td className="px-3 py-3">{receipt.planName}</td>
-                    <td className="px-3 py-3 tabular-nums">{formatRialAsToman(BigInt(receipt.amountRial))}</td>
+                    <td className="px-3 py-3 tabular-nums">
+                      {formatRialAsToman(BigInt(receipt.amountRial))}
+                    </td>
                     <td className="px-3 py-3">
                       <bdi dir="ltr">{receipt.referenceCode}</bdi>
                     </td>
@@ -243,12 +256,16 @@ export function BillingPanel({
         )}
       </section>
       <Dialog open={plan !== null} onOpenChange={(open) => !open && setPlan(null)}>
-        <DialogContent title="پرداخت کارت‌به‌کارت" description="مبلغ را واریز کنید و شماره پیگیری را ثبت کنید.">
+        <DialogContent
+          title="پرداخت کارت‌به‌کارت"
+          description="مبلغ را واریز کنید و شماره پیگیری را ثبت کنید."
+        >
           {plan ? (
             <div className="flex flex-col gap-3">
               <p className="tabular-nums font-bold">{formatRialAsToman(BigInt(plan.priceRial))}</p>
               <p>
-                صاحب حساب: {cardToCard.accountHolderName || 'نام صاحب حساب هنوز در تنظیمات ثبت نشده است'}
+                صاحب حساب:{' '}
+                {cardToCard.accountHolderName || 'نام صاحب حساب هنوز در تنظیمات ثبت نشده است'}
               </p>
               <p>
                 شماره کارت:{' '}
@@ -277,7 +294,12 @@ export function BillingPanel({
                 onChange={(event) => setReferenceCode(event.target.value)}
               />
               <Label htmlFor="last4">چهار رقم آخر کارت، اختیاری</Label>
-              <Input id="last4" value={last4} inputMode="numeric" onChange={(event) => setLast4(event.target.value)} />
+              <Input
+                id="last4"
+                value={last4}
+                inputMode="numeric"
+                onChange={(event) => setLast4(event.target.value)}
+              />
               <Label htmlFor="note">یادداشت، اختیاری</Label>
               <Textarea id="note" value={note} onChange={(event) => setNote(event.target.value)} />
               {error ? <FieldError id="receipt-error">{error}</FieldError> : null}
