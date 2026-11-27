@@ -112,6 +112,7 @@ export async function verifyOtp(
         create: { phoneE164: phone },
         update: {},
       });
+      if (!user.isActive) throw new Error('suspended');
       const memberships = await tx.membership.count({ where: { userId: user.id } });
       let workspaceId: string | null = null;
       if (memberships === 0) {
@@ -153,7 +154,10 @@ export async function verifyOtp(
         },
       });
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message === 'suspended') {
+      return fail(403, 'حساب شما تعلیق شده است');
+    }
     return fail(500, 'ورود موقتاً در دسترس نیست');
   }
   return { ok: true, data: { token, maxAge } };
@@ -167,6 +171,7 @@ export async function loadSession(token: string) {
     include: { user: true, activeWorkspace: true },
   });
   if (!session || session.revokedAt || session.expiresAt.getTime() <= Date.now()) return null;
+  if (!session.user.isActive) return null;
   let role: AppRole | null = null;
   if (session.activeWorkspaceId) {
     const membership = await db.membership.findUnique({

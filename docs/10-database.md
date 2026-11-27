@@ -20,7 +20,10 @@ WebhookEvent و AutomationLog به Workspace وصل می‌شوند
 ```
 
 - `workspaces`: خود Workspace همان tenant است. `id` از نوع uuid نسخه‌ی ۷، `name`، `slug` یکتا، `created_at` و `updated_at`.
-- `users`: `phone_e164` یکتا با شکل `+98…`، و `display_name` اختیاری. هیچ فیلد رمز عبور، و هیچ فیلدی برای رمز اینستاگرام، وجود ندارد (SEC-001).
+- `users`: `phone_e164` یکتا با شکل `+98…`، و `display_name` اختیاری. هیچ فیلد رمز عبور، و هیچ فیلدی برای رمز اینستاگرام، وجود ندارد (SEC-001). `is_active` برای تعلیق از پنل مدیریت است و پیش‌فرض آن روشن است.
+- `system_settings`: فقط تنظیم غیرمحرمانهٔ پلتفرم (شماره کارت، شبا، راه‌های پشتیبانی). هرگز API secret، توکن، `ENCRYPTION_KEY` یا `AUTH_SECRET` اینجا ذخیره نمی‌شود.
+- `help_categories` و `help_articles`: مرکز راهنما. حذف دسته تا وقتی مقاله دارد رد می‌شود.
+- `payment_receipts`: فیش کارت‌به‌کارت با `reference_code`، چهار رقم اختیاری کارت و یادداشت. آپلود فایل در این نسخه نیست. `receipt_image_url` بدون استفاده می‌ماند.
 - `memberships`: عضویت یک کاربر در یک Workspace با نقش `OWNER`، `ADMIN`، `AGENT` یا `VIEWER`. یکتا روی `(workspace_id, user_id)` و ایندکس روی `workspace_id`. هر دو کلید خارجی `ON DELETE RESTRICT` هستند: حذف Workspace یا User تا وقتی عضویت دارد رد می‌شود، تا ردیف عضویت یتیم نشود. حذف عضویت باید صریح و قبل از حذف طرفین باشد.
 
 نام جدول‌ها و ستون‌ها snake_case است. زمان‌ها `timestamptz` هستند.
